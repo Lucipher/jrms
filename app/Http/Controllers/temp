@@ -1,0 +1,91 @@
+<!--@foreach($categories as $categories)
+  <option value='{{$categories->id}}'>{{$categories->category}}</option>
+@endforeach-->
+
+Ok. One miniute
+
+I will give you my code
+---------------------------
+HTML file
+----------------------------
+<!-- Sub-category -->
+<div class="form-group">
+  <div class="col-sm-3 pull-left">
+    <label for="sub_categoryCode" class="control-label">Sub-Category</label>
+  </div>
+  <div class="col-sm-9 pull-right">
+    <div class="input-group">
+      <select class="form-control" name="sub_categoryCode" id="sub_categoryCode" style="width: 100%;">
+        <option value="" selected="selected">--- Select Sub-Category ---</option>
+      </select>
+      <span class="input-group-addon"><i class="fa fa-fw fa-th"></i></span>
+    </div>
+  </div>
+</div>
+-------------------------
+Ajax Calling function
+------------------------
+$("#categoryCode").change(function(){
+    var selected_cat_type = $('#categoryCode :selected').val();
+    $.ajax({
+        url: 'code/get_sub_category_product.php',
+        data: "categoryCode=" + selected_cat_type,
+        type: 'POST',
+        success: function(data)
+        {
+            $('#sub_categoryCode').html(data);
+            $('#sub_categoryCode').focus();
+        },
+        error: function()
+        {
+            //alert(data);
+            alert("Error occured while Retreiving Sub Category! Please try again");
+        }
+    });
+});
+--------------------------what is error... Theriyala.. K neenga modiify module la oru doubt athu pakireengala..
+some times error irutha execute akathu jquery...
+i will disable it for checking...
+Executed File
+-------------------------
+$sql = "SELECT * FROM assign_sub_category WHERE category_code = '$categoryCode' ORDER BY sub_category_name";
+if($query = MYSQLI_QUERY($con, $sql))
+{
+    echo '<option value="" selected disabled> --- Select Sub-Category --- </option>';
+    while($result = MYSQLI_FETCH_ARRAY($query))
+    {
+        echo '<option value="'.$result['sub_category_code'].'">'.$result['sub_category_name'].'</option>';
+    }
+}
+else
+{
+    echo '<option value="" selected disabled> --- Select Sub-Category --- </option>';
+}
+------------------------------------------------------------------------------------
+See this for a while I will charge my Phone and call you.....K team viewer cut panirava?
+... vendam....K
+
+<script>
+  $(document).ready(function() {
+    $(document).on('change','#bnumber',function() {
+      var bnumber = $('#bnumber').val();
+      //console.log(bnumber);
+      $.sjax({
+        type:'get',
+        url:'{{URL::to('findItemName')}}',
+        data:{'id':bnumber},
+        success:function(data) {
+          console.log(data);
+        },
+        error:function() {
+          console.log('Error');
+        }
+      })
+    });
+  });
+</script>
+
+
+@foreach($subcategories as $subcategory)
+  <option value={{$subcategory->id}}>{{$subcategory->subcategory}}</option>
+@endforeach
