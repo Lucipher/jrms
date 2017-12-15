@@ -20,6 +20,7 @@ class Supplier extends Model
           'country',
           'pincode',
           'mobile',
+          'phone',
           'email',
           'notes',
           'status',

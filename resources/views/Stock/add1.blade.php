@@ -725,8 +725,8 @@
                                               <!-- <input list="name" class="form-control date" id="supplier" name="supplier"> -->
                                               <input list="name" class="form-control date" id="supplier" name="supplier">
                                               <datalist id="name">
-                                                  @foreach($data3 as $item)
-                                                       <option> {{$item->itemname}}</option>
+                                                  @foreach($data4 as $item)
+                                                       <option> {{$item->supplier}}</option>
                                                   @endforeach
                                               </datalist>
                                           </div>

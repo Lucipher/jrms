@@ -18,14 +18,15 @@ class CreateSuppliersTable extends Migration
             $table->string('supplier');
             $table->string('door_number');
             $table->string('street');
-            $table->string('area');
+            $table->string('area')->nullable();
             $table->string('city');
             $table->string('district');
             $table->string('state');
             $table->string('country');
             $table->string('pincode');
-            $table->string('mobile');
-            $table->string('email');
+            $table->string('mobile')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('notes')->nullable();
             $table->string('status');
             $table->string('created_by');

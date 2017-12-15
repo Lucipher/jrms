@@ -274,7 +274,7 @@
                 <div class="col-md-6 col-md-offset-1">
                   <div class="form-group">
                     <div class="form-line">
-                        <input type="tel" name="pincode" id="pincode" maxlength="6" min="0" class="form-control" required>
+                        <input type="number" name="pincode" id="pincode" oninput="if(value.length>6)value=value.slice(0,6)" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -285,7 +285,7 @@
                 <div class="col-md-6 col-md-offset-1">
                   <div class="form-group">
                     <div class="form-line">
-                        <input type="tel" name="mobile" id="mobile" class="form-control" maxlength="10" min="0" required>
+                        <input type="number" name="mobile" id="mobile" class="form-control" oninput="if(value.length>10)value=value.slice(0,10)" required>
                     </div>
                   </div>
                 </div>
@@ -297,7 +297,7 @@
                   <div class="form-group">
                     <div class="form-line">
                       <!-- <input type="text" name="branch" id="branch" class="form-control" required> -->
-                      <input list="name1" class="form-control date" id="branch" name="branch" autofocus="true">
+                      <input list="name1" class="form-control date" id="branch" name="branch" autofocus="true" required>
                       <datalist id="name1">
                         @foreach($data as $item)
                           <option> {{$item->location}}</option>

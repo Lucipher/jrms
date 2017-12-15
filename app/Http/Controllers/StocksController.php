@@ -66,8 +66,10 @@ class StocksController extends Controller
    public function supplier()
    {
        $data= CountryDetails::distinct()->get(['country']);
+       $data2= CountryDetails::distinct()->get(['state']);
+       $data3= CountryDetails::distinct()->get(['district']);
        $data1 = Supplier::distinct()->get(['supplier']);
-       return view('Product.supplier')->withData($data)->withData1($data1);
+       return view('Product.supplier')->withData($data)->withData1($data1)->withData2($data2)->withData3($data3);
    }
 
    ######################################Stockadd##########################################
@@ -880,98 +882,101 @@ class StocksController extends Controller
    }
 
    public function add_supplier(Request $request)
-   {
-     // echo "hdghfjghjdg";
-     try
-     {
-         $supplier=$request->supplier;
-         $door_no=$request->door_no;
-         $street=$request->street;
-         $area1=$request->area1;
-         $city=$request->city;
-         $country=$request->country;
-         $state=$request->state;
-         $district=$request->district;
-         $pincode=$request->pincode;
-         $mobile=$request->mobile;
-         $email=$request->email;
-         $notes=$request->notes;
-
-          $user = Auth::user();
-         $supplier1=new Supplier;
-         $supplier1->supplier = $request->supplier;
-         $supplier1->door_number = $request->door_no;
-         $supplier1->street = $request->street;
-         $supplier1->area = $request->area1;
-         $supplier1->city = $request->city;
-         $supplier1->district =$request->district;
-         $supplier1->state = $request->state;
-         $supplier1->country = $request->country;
-         $supplier1->pincode =$request->pincode;
-         $supplier1->mobile =$request->mobile;
-         $supplier1->email =$request->email;
-         $supplier1->notes =$request->notes;
-         $supplier1->status ='Enable';
-         $supplier1->created_by = $user->name;
-         $supplier1->save();
-
-       }
-      catch(\Exception $e)
+    {
+      // echo "hdghfjghjdg";
+      try
       {
-          return $e->getMessage();
-      }
+          $supplier=$request->supplier;
+          $door_no=$request->door_no;
+          $street=$request->street;
+          $area1=$request->area1;
+          $city=$request->city;
+          $country=$request->country;
+          $state=$request->state;
+          $district=$request->district;
+          $pincode=$request->pincode;
+          $mobile=$request->mobile;
+          $email=$request->email;
+          $notes=$request->notes;
+          $phone=$request->phone;
 
-   }
-   public function fill_supplier_details(Request $request)
-   {
-       try
-       {
-         $supplier=$request->supplier;
-         // $supplier_selection = Supplier::distinct()->where('supplier',$supplier)->pluck('door_number','street','area','city','district','state','country','pincode','mobile','email','notes');
-         // return response()->json($supplier_selection);
+           $user = Auth::user();
+          $supplier1=new Supplier;
+          $supplier1->supplier = $request->supplier;
+          $supplier1->door_number = $request->door_no;
+          $supplier1->street = $request->street;
+          $supplier1->area = $request->area1;
+          $supplier1->city = $request->city;
+          $supplier1->district =$request->district;
+          $supplier1->state = $request->state;
+          $supplier1->country = $request->country;
+          $supplier1->pincode =$request->pincode;
+          $supplier1->mobile =$request->mobile;
+          $supplier1->phone =$request->phone;
+          $supplier1->email =$request->email;
+          $supplier1->notes =$request->notes;
+          $supplier1->status ='Enable';
+          $supplier1->created_by = $user->name;
+          $supplier1->save();
 
-         $supplier_selection = DB::table('suppliers')->select( 'door_number','street','area','city','district','state','country','pincode','mobile','email','notes')->where('supplier', $request->input('supplier'))->get();
-
-            return response()->json($supplier_selection);
-       }
-       catch(\Exception $e)
-       {
-           return $e->getMessage();
-       }
-   }
-   public function modify_supplier(Request $request)
-   {
-       try
-       {
-         $supplier=$request->supplier;
-         $door_no=$request->door_no;
-         $street=$request->street;
-         $area1=$request->area1;
-         $city=$request->city;
-         $country=$request->country;
-         $state=$request->state;
-         $district=$request->district;
-         $pincode=$request->pincode;
-         $mobile=$request->mobile;
-         $email=$request->email;
-         $notes=$request->notes;
-         $status=$request->status;
-         // $supplier_selection = DB::table('suppliers')->select( 'door_number','street','area','city','district','state','country','pincode','mobile','email','notes')->where('supplier', $request->input('supplier'))->get();
-         //
-         //    return response()->json($supplier_selection);
-
-         $supplier_update=DB::table('suppliers')
-               ->where('supplier',$supplier)
-               ->update(['door_number' => $door_no,'street'=>$street,'area'=>$area1,'city'=>$city,
-               'state'=>$state, 'district'=>$district,'country'=>$country,'pincode'=>$pincode,'mobile'=>$mobile,'email'=>$email,'notes'=>$notes,'status'=>$status]);
-
-       }
+        }
        catch(\Exception $e)
        {
            return $e->getMessage();
        }
 
-   }
+    }
+    public function fill_supplier_details(Request $request)
+    {
+        try
+        {
+          $supplier=$request->supplier;
+          // $supplier_selection = Supplier::distinct()->where('supplier',$supplier)->pluck('door_number','street','area','city','district','state','country','pincode','mobile','email','notes');
+          // return response()->json($supplier_selection);
+
+          $supplier_selection = DB::table('suppliers')->select( 'door_number','street','area','city','district','state','country','pincode','mobile','phone','email','notes')->where('supplier', $request->input('supplier'))->get();
+
+             return response()->json($supplier_selection);
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+    public function modify_supplier(Request $request)
+    {
+        try
+        {
+          $supplier=$request->supplier;
+          $door_no=$request->door_no;
+          $street=$request->street;
+          $area1=$request->area1;
+          $city=$request->city;
+          $country=$request->country;
+          $state=$request->state;
+          $district=$request->district;
+          $pincode=$request->pincode;
+          $mobile=$request->mobile;
+          $phone=$request->phone;
+          $email=$request->email;
+          $notes=$request->notes;
+          $status=$request->status;
+          // $supplier_selection = DB::table('suppliers')->select( 'door_number','street','area','city','district','state','country','pincode','mobile','email','notes')->where('supplier', $request->input('supplier'))->get();
+          //
+          //    return response()->json($supplier_selection);
+
+          $supplier_update=DB::table('suppliers')
+                ->where('supplier',$supplier)
+                ->update(['door_number' => $door_no,'street'=>$street,'area'=>$area1,'city'=>$city,
+                'state'=>$state, 'district'=>$district,'country'=>$country,'pincode'=>$pincode,'mobile'=>$mobile,'phone'=>$phone,'email'=>$email,'notes'=>$notes,'status'=>$status]);
+
+        }
+        catch(\Exception $e)
+        {
+            return $e->getMessage();
+        }
+
+    }
    public function add_country(Request $request)
    {
        try
