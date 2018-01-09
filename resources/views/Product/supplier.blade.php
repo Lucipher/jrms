@@ -44,6 +44,7 @@
        {
              $("#modifier_supplier_div").hide();
              $("#supplier").focus();
+             $( "#add_supplier_button" ).hide();
 
              $( "#add_supplier_button" ).click(function()
              {
@@ -52,6 +53,8 @@
                  $("#supplier").focus();
                  $("#add_supplier_div").show();
                  $("#modifier_supplier_div").hide();
+                 $( "#modify_supplier_button" ).show();
+                 $( "#add_supplier_button" ).hide();
 
              });
              $( "#modify_supplier_button" ).click(function()
@@ -60,6 +63,8 @@
                  $("#edit_district").blur();
                  $("#add_supplier_div").hide();
                  $("#modifier_supplier_div").show();
+                 $( "#add_supplier_button" ).show();
+                 $( "#modify_supplier_button" ).hide();
 
                  $("#edit_door_number").attr("disabled", "disabled");
                  $("#edit_street").attr("disabled", "disabled");
@@ -160,7 +165,7 @@
                         type: 'get',
                         success:function(data)
                         {
-                          alert(data);
+
                           alert("Modified Successfully");
 
                         }
@@ -186,120 +191,131 @@
 
          });
 
-             $('#email').change(function()
-             {
-                 $('#email').filter(function()
-                 {
-                     var email=$('#email').val();
-                     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                     if( !emailReg.test( email ))
-                     {
-                         alert('Please enter valid email');
-                         $('#email').focus();
-                     }
-                     else
-                     {
-                         // alert("valid email");
-                     }
-                 })
-             });
+         $('#email').keydown( function(e) {
+                if (e.keyCode == 9 && !e.shiftKey)
+                {
+                  var email=$('#email').val();
+                  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                  if( !emailReg.test( email ))
+                  {
+                      alert('Please enter valid email');
+                      $(this).focus();
+                      return false;
+                  }
+                  else if( email == '')
+                  {
+                      alert("Please fill this field");
+                      $(this).focus();
+                      return false;
+                  }
+                }
 
-             $('#mobile').change(function()
-             {
-                 $('#mobile').filter(function()
-                 {
-                   // alert("dfbsdgfg");
-                     var mobile=$('#mobile').val();
-                     var mobReg = /^\d{10}$/;
-                     if( !mobReg.test( mobile ) )
-                     {
-                         alert('Please enter valid phone');
-                           $('#mobile').focus();
-                     }
-                     else
-                     {
+              });
+              $('#mobile').keydown( function(e) {
+                  if (e.keyCode == 9 && !e.shiftKey)
+                  {
+                    var mobile=$('#mobile').val();
+                    var mobReg = /^\d{10}$/;
+                    if( mobile == '')
+                    {
+                        alert("Please fill this field");
+                        $(this).focus();
+                        return false;
+                    }
+                    else if( !mobReg.test( mobile ))
+                    {
+                        alert('Please enter valid mobile number');
+                        $(this).focus();
+                        return false;
+                    }
+                  }
 
-                     }
-                 })
-             });
-             $('#pincode').change(function()
-             {
-                 $('#pincode').filter(function()
-                 {
-                     var pincode=$('#pincode').val();
-                     var pinReg =/^\d{6}$/;
-                     if( !pinReg.test( pincode ) )
-                     {
-                         alert('Please enter valid pincode');
-                           $('#pincode').focus();
-                     }
-                     else if( $("#pincode").val().length == 0)
-                     {
-                       alert('Please fill in this field');
-                     }
-                     else
-                     {
+                });
 
-                     }
-                 })
-             });
+                $('#pincode').keydown( function(e) {
+                    if (e.keyCode == 9 && !e.shiftKey)
+                    {
+                      var pincode=$('#pincode').val();
+                      var pinReg =/^\d{6}$/;
+                      if( pincode == '')
+                      {
+                          alert("Please fill this field");
+                          $(this).focus();
+                          return false;
+                      }
+                      else if( !pinReg.test( pincode ) )
+                      {
+                          alert('Please enter valid pincode');
+                          $(this).focus();
+                          return false;
+                      }
+                    }
 
-             //edit
-             $('#edit_email').change(function()
-             {
-                 $('#edit_email').filter(function()
-                 {
-                     var email=$('#edit_email').val();
-                     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                     if( !emailReg.test( email ))
-                     {
-                         alert('Please enter valid email');
-                         $('#email').focus();
-                     }
-                     else
-                     {
-                         // alert("valid email");
-                     }
-                 })
-             });
+                  });
 
-             $('#edit_mobile').change(function()
-             {
-                 $('#edit_mobile').filter(function()
-                 {
-                   // alert("dfbsdgfg");
-                     var mobile=$('#edit_mobile').val();
-                     var mobReg = /^\d{10}$/;
-                     if( !mobReg.test( mobile ) )
-                     {
-                         alert('Please enter valid phone');
-                           $('#mobile').focus();
-                     }
-                     else
-                     {
 
-                     }
-                 })
-             });
-             $('#edit_pincode').change(function()
-             {
-                 $('#edit_pincode').filter(function()
-                 {
-                     var pincode=$('#edit_pincode').val();
-                     // alert(pincode.length);
-                     var pinReg =/^\d{6}$/;
-                     if( !pinReg.test( pincode ) )
-                     {
-                         alert('Please enter valid pincode');
-                           $('#pincode').focus();
-                     }
-                     else
-                     {
+            //edit
+            $('#edit_email').keydown( function(e) {
+                if (e.keyCode == 9 && !e.shiftKey)
+                {
+                  var email=$('#edit_email').val();
+                  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                  if( !emailReg.test( email ))
+                  {
+                      alert('Please enter valid email');
+                      $(this).focus();
+                      return false;
+                  }
+                  else if( email == '')
+                  {
+                      alert("Please fill this field");
+                      $(this).focus();
+                      return false;
+                  }
+                }
 
-                     }
-                 })
-             });
+              });
 
+              $('#edit_mobile').keydown( function(e) {
+                  if (e.keyCode == 9 && !e.shiftKey)
+                  {
+                    var mobile=$('#edit_mobile').val();
+                    var mobReg = /^\d{10}$/;
+                    if( mobile == '')
+                    {
+                        alert("Please fill this field");
+                        $(this).focus();
+                        return false;
+                    }
+                    else if( !mobReg.test( mobile ) )
+                    {
+                        alert('Please enter valid phone');
+                        $(this).focus();
+                        return false;
+                    }
+                  }
+
+                });
+                $('#edit_pincode').keydown(function(e) {
+                    if (e.keyCode == 9 && !e.shiftKey)
+                    {
+                      var pincode=$('#edit_pincode').val();
+                      var pinReg =/^\d{6}$/;
+                      if( pincode == '')
+                      {
+                          alert("Please fill this field");
+                          $(this).focus();
+                          return false;
+                      }
+                      else if( !pinReg.test( pincode ) )
+                      {
+                          alert('Please enter valid pincode');
+                          $(this).focus();
+                          return false;
+                      }
+                    }
+
+                  });
              $( "#save" ).click(function()
              {
                var supplier=$('#supplier').val();
@@ -463,17 +479,17 @@
                     <img src="images/user.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
-                    <div class="email">{{{Auth::user()->email}}}</div>
+                    <div style="color: white;" class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
+                    <div style="color: white;" class="email">{{{Auth::user()->email}}}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <!-- <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                            <li role="seperator" class="divider"></li>
+                            <li role="seperator" class="divider"></li> -->
                             <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="material-icons">input</i>Sign Out</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 {{ csrf_field() }}
@@ -497,13 +513,13 @@
                     @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                     <li class="">
                         <a href="{{ url('/register') }}">
-                            <i class="material-icons">home</i>
+                            <i class="material-icons">assignment_ind</i>
                             <span>Registration</span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">dns</i>
+                            <i class="material-icons">shopping_basket</i>
                             <span>Items</span>
                         </a>
                         <ul class="ml-menu">
@@ -518,10 +534,25 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">euro_symbol</i>
+                            <span>Purchase</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li >
+                                <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
+
                     <li >
                          <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">reorder</i>
+                            <i class="material-icons">line_style</i>
                             <span>Stock</span>
                         </a>
                         <ul class="ml-menu">
@@ -535,10 +566,6 @@
                             </li>
 
                             <li>
-                                <a href="{!! url('/return'); !!}">Stock Return</a>
-                            </li>
-
-                            <li>
                                 <a href="{!! url('/stockview'); !!}">Stock View</a>
                             </li>
 
@@ -546,7 +573,7 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">reorder</i>
+                          <i class="material-icons">shopping_cart</i>
                           <span>Sales</span>
                         </a>
                         <ul class="ml-menu">
@@ -783,7 +810,7 @@
                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                      <div class="form-group">
                                          <div class="form-line">
-                                             <input type="text" id="pincode" class="form-control" placeholder="pincode" required>
+                                             <input type="number" id="pincode" class="form-control" placeholder="pincode" required min="0" oninput="if(value.length>6)value=value.slice(0,6)">
                                          </div>
                                      </div>
                                  </div>
@@ -795,7 +822,7 @@
                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                      <div class="form-group">
                                          <div class="form-line">
-                                             <input type="phone" id="mobile" class="form-control" placeholder="Mobile" required>
+                                             <input type="number" id="mobile" class="form-control" maxlength="10" minlength="10" placeholder="Mobile" min="0" oninput="if(value.length>10)value=value.slice(0,10)" required  oninvalid="alert('Enter proper Mobile Number');">
                                          </div>
                                      </div>
                                  </div>
@@ -807,7 +834,7 @@
                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                      <div class="form-group">
                                          <div class="form-line">
-                                             <input type="phone" id="phone" class="form-control" placeholder="Phone" required>
+                                             <input type="number" id="phone" class="form-control" placeholder="Phone" required min="0" oninput="if(value.length>10)value=value.slice(0,10)">
                                          </div>
                                      </div>
                                  </div>
@@ -819,7 +846,7 @@
                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                      <div class="form-group">
                                          <div class="form-line">
-                                             <input type="email" id="email" name="email" class="form-control" placeholder="abc@gmail.com" required>
+                                             <input type="email" id="email" name="email" class="form-control" placeholder="abc@gmail.com" required  oninvalid="alert('Enter proper Email');">
                                          </div>
                                      </div>
                                  </div>
@@ -1066,7 +1093,7 @@
                              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                <div class="form-group">
                                    <div class="form-line">
-                                       <input type="text" id="edit_pincode" class="form-control" placeholder="pincode" required>
+                                       <input type="text" id="edit_pincode" class="form-control" placeholder="pincode" required min="0" oninput="if(value.length>6)value=value.slice(0,6)">
                                    </div>
                                </div>
                            </div>
@@ -1078,7 +1105,7 @@
                              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                <div class="form-group">
                                    <div class="form-line">
-                                       <input type="phone" id="edit_mobile" class="form-control" placeholder="Mobile">
+                                       <input type="phone" id="edit_mobile" class="form-control" placeholder="Mobile" min="0" oninput="if(value.length>10)value=value.slice(0,10)">
                                    </div>
                                </div>
                            </div>
@@ -1090,7 +1117,7 @@
                              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                                <div class="form-group">
                                    <div class="form-line">
-                                       <input type="phone" id="edit_phone" class="form-control" placeholder="Phone" required>
+                                       <input type="phone" id="edit_phone" class="form-control" placeholder="Phone" required min="0" oninput="if(value.length>10)value=value.slice(0,10)">
                                    </div>
                                </div>
                            </div>
@@ -1136,7 +1163,7 @@
          </div>
    </section>
 
-   <script src="/script/sales.js"></script>
+   <script src="script/sales.js"></script>
    <!-- Jquery Core Js -->
    <script src="plugins/jquery/jquery.min.js"></script>
 

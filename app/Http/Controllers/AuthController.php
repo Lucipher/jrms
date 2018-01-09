@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Auth;
@@ -9,16 +7,14 @@ use App\User;
 use App\StockLocation;
 use Hash;
 use DB;
-
+use PDF;
 class AuthController extends Controller
 {
-    //
     public function index()
     {
       $data = StockLocation::orderBy('location', 'ASC')->get();
       return view('product.userregistration')->withData($data);
     }
-
     public function store(Request $request)
     {
       try
@@ -26,6 +22,7 @@ class AuthController extends Controller
         $user = new User;
         $id = User::orderBy('id', 'desc')->first()->id;
         $user->id = $id+1;
+        $user->sid = $request->sid;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
@@ -45,7 +42,6 @@ class AuthController extends Controller
         return $e->getMessage();
       }
     }
-
     public function changepwd(Request $request)
     {
       try

@@ -41,19 +41,19 @@
 
 
     <script type="text/javascript">
+
+
          $(document).ready(function()
             {
-              $("#stock_edit_div").hide();
-
-                // $("#prod_name").focus();
+                $("#confirm").attr("disabled", "disabled");
+                $("#stock_edit_div").hide();
                 $("#stock_display").hide();
                 $("#hide_barcode").hide();
                 $("#hide_product").hide();
+                $("#add_stock_button").hide();
 
                 $( "#prod_name" ).change(function( event ) {
-                    // if ( event.which == 13 || event.which == 9 )
-                    // {
-                    //     // alert("pressed");
+
                         var prod_name=$('#prod_name').val();
                         var url1='demo';
                          $.ajax
@@ -63,11 +63,7 @@
                         type: 'get',
                         success:function(data)
                         {
-                          // alert("Record Inserted");
                             $.each(data, function(i, ItemSel){
-                            // alert(ItemSel.itemname);
-                            // alert(ItemSel.bnumber);
-                            // $("#prod_name").val(ItemSel.itemname);
                             $("#barcode").val(ItemSel.bnumber);
                             $("#product_id").val(ItemSel.id);
                             $("#qty").focus();
@@ -76,13 +72,9 @@
 
                      });
                      return false;
-                    // }
                 });
 
                 $( "#barcode" ).change(function( event ) {
-                    // if ( event.which == 13 || event.which == 9 )
-                    // {
-                    //     // alert("pressed");
                         var barcode=$('#barcode').val();
                         var url2='select_barcode';
                          $.ajax
@@ -92,32 +84,26 @@
                         type: 'get',
                         success:function(data)
                         {
-                          // alert("Record Inserted");
-                            $.each(data, function(i, ItemSel){
-                            // alert(ItemSel.itemname);
-                            // alert(ItemSel.bnumber);
-                            $("#prod_name").val(ItemSel.itemname);
-                            // $("#barcode").val(ItemSel.bnumber);
-                            $("#product_id").val(ItemSel.id);
-                            $("#qty").focus();
-                             });
+                            $.each(data, function(i, ItemSel)
+                            {
+                              $("#prod_name").val(ItemSel.itemname);
+                              $("#product_id").val(ItemSel.id);
+                              $("#qty").focus();
+                            });
                         },
 
                      });
                      return false;
-                    // }
                 });
 
-                //autocomplete search
-                  // if ( event.which == 13 || event.which == 9)
 
                 $( "#qty" ).keypress(function( event ) {
                     if ( event.which == 13 )
                     {
-                        var supplier=$('#supplier').val();
-                        var invoice_number=$('#invoice_number').val();
-                        var billed_date=$('#billed_date').val();
-                        var received_date=$('#received_date').val();
+                        // var supplier=$('#supplier').val();
+                        // var invoice_number=$('#invoice_number').val();
+                        // var billed_date=$('#billed_date').val();
+                        // var received_date=$('#received_date').val();
                         var prod_name=$('#prod_name').val();
                         var product_id=$('#product_id').val();
                         var barcode=$('#barcode').val();
@@ -133,26 +119,6 @@
                           alert("please fill the Product Name");
                           $("#prod_name").focus();
                         }
-                        else if(supplier == '')
-                        {
-                          alert("please fill the Supplier");
-                          $("#supplier").focus();
-                        }
-                        else if (invoice_number == '')
-                        {
-                          alert("please fill the Invoice Number");
-                          $("#invoice_number").focus();
-                        }
-                        else if (billed_date == '')
-                        {
-                          alert("please fill the Billed date");
-                          $("#billed_date").focus();
-                        }
-                        else if (received_date == '')
-                        {
-                          alert("please fill the Received Date");
-                          $("#received_date").focus();
-                        }
                         else
                         {
                             if (qty == '') {
@@ -161,12 +127,17 @@
 
                             else
                             {
-                              $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + supplier +"</td><td>" + invoice_number +"</td><td>" + billed_date +"</td><td>" + received_date +"</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td></tr>");
+                              // $('#display_table tbody').append('<tr><td><input type="hidden" value=' + ' ' + ' /></td><td><input type="text" style="border: none;" size="10" value='
+                              // + prod_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
+                              // product_id  + ' ></td><td><input type="text" style="border: none;" size="10" value='+ barcode +
+                              // ' ></td><td><input type="number" style="border: none;" size="10" value='+ qty +
+                              // ' ></td><td><input type="button" class="ajaxdelete" id="ajaxdelete" value="Delete" /></td></tr>');
 
-                                  $("#supplier").val('');
-                                  $("#invoice_number").val('');
-                                  $("#billed_date").val('');
-                                  $("#received_date").val('');
+                              $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td><td><input type='button' class='ajaxdelete' id='ajaxdelete' value='Delete' /></td></tr>");
+
+                              // $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td><td>" + qty  + "</td></tr>");
+
+                                  $("#confirm").removeAttr('disabled');
                                   $("#prod_name").val('');
                                   $("#product_id").val('');
                                   $("#barcode").val('');
@@ -184,52 +155,37 @@
                       $("#display_table tr:gt(0)").each(function ()
                                   {
                                       var this_row = $(this);
-                                      var supplier = $.trim(this_row.find('td:eq(1)').html());
-                                      var invoice_number = $.trim(this_row.find('td:eq(2)').html());
-                                      var billed_date = $.trim(this_row.find('td:eq(3)').html());
-                                      var received_date = $.trim(this_row.find('td:eq(4)').html());
-                                      var prod_name = $.trim(this_row.find('td:eq(5)').html());//td:eq(0) means first
-                                          // alert(prod_name);
-                                      var product_id = $.trim(this_row.find('td:eq(6)').html());
-                                      var bcode = $.trim(this_row.find('td:eq(7)').html());
+                                      var prod_name = $.trim(this_row.find('td:eq(1)').html());//td:eq(0) means first
+                                        // alert(prod_name);
+                                      var product_id = $.trim(this_row.find('td:eq(2)').html());
+                                      var bcode = $.trim(this_row.find('td:eq(3)').html());
                                       // alert(bcode);
-                                      var qty = $.trim(this_row.find('td:eq(8)').html());
-                                      // alert(qty);
+                                      var qty = $.trim(this_row.find('td:eq(4)').html());
+                                      // var qty1 = this_row.find('td:eq(4)').html();
+
                                       var rows = $('tr:visible').length ;
                                       var row = rows -1;
                                       // alert(row);
                                       var url3='stockaddcheck';
+                                      // alert(prod_name);alert(product_id);alert(bcode);alert(qty);alert(loc);alert(row);alert(notes);
                                       $.ajax
                                       ({
                                           url: url3,
-                                          data: {supplier:supplier,invoice_number:invoice_number,billed_date:billed_date,received_date:received_date,
-                                            prod_name:prod_name,product_id:product_id,bcode:bcode,qty:qty,loc:loc,row:row,notes:notes},
+                                          data: {prod_name:prod_name,product_id:product_id,bcode:bcode,qty:qty,loc:loc,row:row,notes:notes},
                                           type: 'get',
                                           success:function(data)
                                           {
-
-                                            // alert("Saved Successfully");
-                                            // alert(data.length);
-                                            var i=0;
-                                            if(i == 0)
-                                            {
-                                              i=1;
-                                              alert("Saved Successfully");
-
-                                            }
+                                            alert(data);
                                           },
                                       });
                                    });
+                          alert("Saved Successfully");
                           $('#smallModal').modal('hide');
                           location.reload();
                       });
 
                       $( "#add_product" ).click(function() {
 
-                        var supplier=$('#supplier').val();
-                        var invoice_number=$('#invoice_number').val();
-                        var billed_date=$('#billed_date').val();
-                        var received_date=$('#received_date').val();
                         var prod_name=$('#prod_name').val();
                         var product_id=$('#product_id').val();
                         var barcode=$('#barcode').val();
@@ -245,25 +201,10 @@
                           alert("please fill the Product Name");
                           $("#prod_name").focus();
                         }
-                        else if(supplier == '')
+                        else if(barcode == '')
                         {
-                          alert("please fill the Supplier");
-                          $("#supplier").focus();
-                        }
-                        else if (invoice_number == '')
-                        {
-                          alert("please fill the Invoice Number");
-                          $("#invoice_number").focus();
-                        }
-                        else if (billed_date == '')
-                        {
-                          alert("please fill the Billed date");
-                          $("#billed_date").focus();
-                        }
-                        else if (received_date == '')
-                        {
-                          alert("please fill the Received Date");
-                          $("#received_date").focus();
+                          alert("please fill the Barcode");
+                          $("#barcode").focus();
                         }
                         else
                         {
@@ -273,12 +214,16 @@
 
                             else
                             {
-                              $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + supplier +"</td><td>" + invoice_number +"</td><td>" + billed_date +"</td><td>" + received_date +"</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td></tr>");
+                              // $('#display_table tbody').append('<tr><td><input type="hidden" value=' + ' ' + ' /></td><td><input type="text" style="border: none;" size="10" value='
+                              // + prod_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
+                              // product_id  + ' ></td><td><input type="text" style="border: none;" size="10" value='+ barcode +
+                              // ' ></td><td><input type="number" style="border: none;" size="10" value='+ qty +
+                              // ' ></td><td><input type="button" class="ajaxdelete" id="ajaxdelete" value="Delete" /></td></tr>');
 
-                                  $("#supplier").val('');
-                                  $("#invoice_number").val('');
-                                  $("#billed_date").val('');
-                                  $("#received_date").val('');
+                                // $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td><td><button type='button' class='btn bg-teal btn-block btn-xs waves-effect' onclick='deleteRows(this)'><i class='material-icons'>delete</i></button></td></tr>");
+                              $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name +   "</td><td>" + product_id +   "</td><td>"  + barcode + "</td><td>" + qty  + "</td><td><input type='button' class='ajaxdelete' id='ajaxdelete' value='Delete' /></td></tr>");
+
+                                  $("#confirm").removeAttr('disabled');
                                   $("#prod_name").val('');
                                   $("#product_id").val('');
                                   $("#barcode").val('');
@@ -293,12 +238,16 @@
 
                       $( "#add_stock_button" ).click(function()
                       {
+                          $("#add_stock_button").hide();
+                          $("#modify_stock_button").show();
                          $("#stock_add_div").show();
                          $("#stock_edit_div").hide();
 
                       });
                       $( "#modify_stock_button" ).click(function()
                       {
+                          $("#add_stock_button").show();
+                          $("#modify_stock_button").hide();
                          $("#stock_add_div").hide();
                          $("#stock_edit_div").show();
 
@@ -316,129 +265,47 @@
                                    // // alert("Record Inserted");
                                    $.each(data, function(i, ItemSel){
 
-                                   // alert(ItemSel.bnumber);
-
-                                   // $("#edit_product_name").val(ItemSel.product_name);
-                                   // $("#edit_barcode").val(ItemSel.barcode);
-                                   // $("#edit_product_id").val(ItemSel.product_id);
-                                   // $("#edit_qty").val(ItemSel.quantity);
-                                   // $("#edit_from_location").val(ItemSel.from_location);
-                                   // $("#edit_to_location").val(ItemSel.to_location);
-                                   // $("#edit_id").val(ItemSel.id);
-
-                                   // alert(ItemSel.id);
-                                   // $("#qty").focus();
-                                   // $("#showloc").show();
-                                   // $("#stkloc").focus();
-
-                                  //  $('#stock_edit tbody').append("<tr><td>" + " " + "</td><td>" + ItemSel.product_name + "</td><td>" +
-                                  //  ItemSel.barcode + "</td><td>" + ItemSel.location  + "</td><td>" + ItemSel.supplier + "</td><td>" +
-                                  //  ItemSel.invoice_number   + "</td><td>" + ItemSel.billed_date  + "</td><td>" + ItemSel.received_date + "</td><td>" + ItemSel.quantity
-                                  //  + "</td><td><input type='button' class='ajaxedit' id='ajaxedit' value='Edit'/> <input type='button' id='ajaxsave' class='ajaxsave' value='Save'>"
-                                  //  + "</td></tr>");
-
-                                   $('#stock_edit tbody').append('<tr><td><input type="text" style="border: none;" size="10" value='
-                                   + ItemSel.product_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
-                                   ItemSel.location  + ' ></td><td><input type="text" style="border: none;"  id="edit_supplier" class="content_edit" size="10" value='+ ItemSel.supplier +
-                                   ' ></td><td><input type="text" id="edit_invoice" class="content_edit" style="border: none;" size="10" value='+ ItemSel.invoice_number +
-                                   ' ></td><td><input type="date" id="edit_billeddate" class="content_edit" style="border: none;" size="10" value='
-                                   + ItemSel.billed_date + ' /></td><td><input type="date" id="edit_receiveddate"  style="border: none;" id="edit_billeddate" class="content_edit" size="10" value='
-                                   + ItemSel.received_date + ' /></td><td><input type="number"  id="edit_quantity" class="content_edit"  onkeypress="return event.charCode >= 48" min="1" style="border: none;width:80px;" size="5" value='
+                                   $('#stock_edit tbody').append('<tr><td><input type="text" style="border: none;" size="10" class="content_edit1" value='
+                                   + ItemSel.product_name + ' /></td><td><input type="text" style="border: none;" class="content_edit1" size="10" value='
+                                   + ItemSel.product_id + ' /></td><td><input type="text" style="border: none;" class="content_edit1" size="10" value='
+                                   + ItemSel.barcode + ' /></td><td><input type="text" style="border: none;" size="10" class="content_edit1" value='
+                                   + ItemSel.location  + ' ></td><td><input type="number"  id="edit_quantity" class="content_edit"  onkeypress="return event.charCode >= 48" min="1" style="border: none;width:80px;" size="5" value='
                                    + ItemSel.quantity + ' ></td><td><input type="text"  id="edit_notes" class="content_edit"  style="border: none;" size="10" value='
                                     + ItemSel.notes + ' ></td><td><input type="button" class="ajaxedit" id="ajaxedit" value="Edit" /> <input type="button" class="ajaxsave" id="ajaxsave" value="Save" />' + '</td></tr>');
 
-                                    //  $(".content_edit").attr("disabled", "disabled");
+
                                     $(".content_edit").attr("readonly", "false");
+                                    $(".content_edit1").attr("readonly", "false");
                                  });
                                  // alert(data);
                                },
                             });
-
-
-                        });
+                          });
 
                          });
                   });
-                  $(document).on('click', '.ajaxedit', function()
+
+                  $(document).on('click', '.ajaxdelete', function()
                   {
                       // alert("edit");
 
-                      $(".content_edit").  removeAttr('readonly');
+                     $(this).parents("tr").remove();
 
-                      // var product_name = $(this).closest("tr").find('td:eq(1)').text();
-                      // var barcode = $(this).closest("tr").find('td:eq(2)').text();
-                      // var location = $(this).closest("tr").find('td:eq(3)').text();
-                      // var supplier = $(this).closest("tr").find('td:eq(4)').text();
-                      // var invoice_number = $(this).closest("tr").find('td:eq(5)').text();
-                      // var billed_date = $(this).closest("tr").find('td:eq(6)').text();
-                      // var received_date = $(this).closest("tr").find('td:eq(7)').text();
-                      // var quantity = $(this).closest("tr").find('td:eq(8)').text();
+                  });
+
+                  $(document).on('click', '.ajaxedit', function()
+                  {
+
+                      $(".content_edit").  removeAttr('readonly');
                       var product_name = $(this).closest("tr").find("td:eq(0) input[type='text']").val();
-                      // alert(product_name);
-                      var location = $(this).closest("tr").find("td:eq(1) input[type='text']").val();
-                      // alert(location);
-                      var supplier = $(this).closest("tr").find("td:eq(2) input[type='text']").val();
-                      // alert(supplier);
-                      var invoice_number = $(this).closest("tr").find("td:eq(3) input[type='text']").val();
-                      // alert(invoice_number);
-                      var billed_date = $(this).closest("tr").find("td:eq(4) input[type='date']").val();
-                      // alert(billed_date);
-                      var received_date = $(this).closest("tr").find("td:eq(5) input[type='date']").val();
-                      var quantity = $(this).closest("tr").find("td:eq(6) input[type='number']").val();
-                      var notes = $(this).closest("tr").find("td:eq(7) input[type='text']").val();
+                      var product_id = $(this).closest("tr").find("td:eq(1) input[type='text']").val();
+                      var barcode = $(this).closest("tr").find("td:eq(2) input[type='text']").val();
+                      var location = $(this).closest("tr").find("td:eq(3) input[type='text']").val();
+                      var quantity = $(this).closest("tr").find("td:eq(4) input[type='number']").val();
+                      var notes = $(this).closest("tr").find("td:eq(5) input[type='text']").val();
                       $("#stock_qty").val(quantity);
 
-                      // $(this).closest("tr").find('td:eq(4)' ).prop('contenteditable', true);
 
-                      // $(this).closest("tr").find('td:eq(5)').prop('contenteditable', true);
-
-                      // $(this).closest("tr").find('td:eq(6)').prop('contenteditable', true);
-                      // $(this).closest("tr").find('td:eq(7)').prop('contenteditable', true);
-
-
-                      // $(this).closest("tr").find('td:eq(6)').click(function(){
-                      //
-                      //     // $(this).closest("tr").find('td:eq(6)').prop('contenteditable', true);
-                      //     //   alert("Date should be of the format YYYY-MM-DD");
-                      //       // var html = $(this).html();
-                      //       // var input = $('<input type="text" >');
-                      //       // input.val(html);
-                      //       // $(this).html(input);
-                      //       //
-                      //       // var received_date = $(this).closest("tr").find('td:eq(6)').text();
-                      //       // var red = $('<input class="form-control" type="date" style="width:100px;"/>');
-                      //       // red.val(received_date);
-                      //       // // alert(red);
-                      //       // $(this).closest("tr").find('td:eq(6)').replaceWith(red);
-                      //
-                      //       //
-                      //       var billed_date = $(this).closest("tr").find('td:eq(6)').text();
-                      //       var dis = $('<input class="form-control" type="date" style="width:100px;"/>');
-                      //       dis.val(billed_date);
-                      //       $(this).closest("tr").find('td:eq(6)').replaceWith(dis);
-                      //       // var currentVal = $(this).text();
-                      //       // $(this).html("<input type='date'>");
-                      //
-                      // });
-                      //
-                      //     $(this).closest("tr").find('td:eq(8)').click(function(){
-                      //
-                      //       var billed_date = $(this).closest("tr").find('td:eq(8)').text();
-                      //       var dis = $('<input class="form-control" type="number" onkeypress="return event.charCode >= 48" min="1" style="width:100px;"/>');
-                      //       dis.val(billed_date);
-                      //       $(this).closest("tr").find('td:eq(8)').replaceWith(dis);
-                      //
-                      //     });
-                      // $(this).closest("tr").find('td:eq(7)').click(function(){
-                      //     // $(this).closest("tr").find('td:eq(7)').prop('contenteditable', true);
-                      //       // alert("data");
-                      //       var received_date = $(this).closest("tr").find('td:eq(7)').text();
-                      //       var red = $('<input class="form-control" type="date" style="width:100px;"/>');
-                      //       red.val(received_date);
-                      //       $(this).closest("tr").find('td:eq(7)').replaceWith(red);
-                      //
-                      //
-                      // });
                   });
 
                   $(document).on('click', '.ajaxsave', function()
@@ -448,81 +315,44 @@
                     $(".content_edit").attr("readonly", "false");
 
                     var product_name = $(this).closest("tr").find("td:eq(0) input[type='text']").val();
-                    var location = $(this).closest("tr").find("td:eq(1) input[type='text']").val();
-                    var supplier = $(this).closest("tr").find("td:eq(2) input[type='text']").val();
-                    var invoice_number = $(this).closest("tr").find("td:eq(3) input[type='text']").val();
-                    var billed_date = $(this).closest("tr").find("td:eq(4) input[type='date']").val();
-                    var received_date = $(this).closest("tr").find("td:eq(5) input[type='date']").val();
-                    var quantity = $(this).closest("tr").find("td:eq(6) input[type='number']").val();
-                    var notes = $(this).closest("tr").find("td:eq(7) input[type='text']").val();
+                    var product_id = $(this).closest("tr").find("td:eq(1) input[type='text']").val();
+                    var barcode = $(this).closest("tr").find("td:eq(2) input[type='text']").val();
+                    var location = $(this).closest("tr").find("td:eq(3) input[type='text']").val();
+                    var quantity = $(this).closest("tr").find("td:eq(4) input[type='number']").val();
+                    var notes = $(this).closest("tr").find("td:eq(5) input[type='text']").val();
                     // alert(notes);
                      var url5='ajax_add_edit_quantity';
                       $.ajax
                       ({
                           url: url5,
-                          data: {product_name:product_name,location:location,supplier:supplier,invoice_number:invoice_number,
-                            billed_date:billed_date,received_date:received_date,quantity:quantity,notes:notes},
+                          data: {product_name:product_name,barcode:barcode,product_id:product_id,location:location,quantity:quantity,notes:notes},
                           type: 'get',
                           success:function(data)
                           {
-                          // alert("fjjdsg");
+
                             if(+quantity == '')
                             {
                               alert("Please enter the quantity to be modified");
                               $("#edit_quantity").  removeAttr('readonly');
                               $("#edit_quantity").  focus();
                             }
-                            else if(+supplier == '')
-                            {
-                                alert("Enter Supplier");
-                                $("#edit_supplier").  removeAttr('readonly');
-                                $("#edit_supplier").  focus();
-                            }
-                            else if(+invoice_number == '')
-                            {
-                                alert("Enter Invoice Number");
-                                $("#edit_invoice").  removeAttr('readonly');
-                                $("#edit_invoice").  focus();
-                            }
-                            else if(+billed_date == '')
-                            {
-                                alert("Enter billed_date");
-                                $("#edit_billeddate").  removeAttr('readonly');
-                                $("#edit_billeddate").  focus();
-                            }
-                            else if(+received_date == '')
-                            {
-                                alert("Enter received_date");
-                                $("#edit_receiveddate").  removeAttr('readonly');
-                                $("#edit_receiveddate").  focus();
-                            }
-
-                            // else if(+quantity > data)
-                            // {
-                            //     alert("Quantity is more than the stock");
-                            //     $("#edit_quantity").  removeAttr('readonly');
-                            //     $("#edit_quantity").  focus();
-                            // }
                             else
                             {
-                              // alert("inside");
                                var url6='stock_add_update';
                               $.ajax
                               ({
                                   url: url6,
-                                  data: {product_name:product_name,location:location,supplier:supplier,invoice_number:invoice_number,
-                                    billed_date:billed_date,received_date:received_date,quantity:quantity,notes:notes},
+                                  data: {product_name:product_name,barcode:barcode,product_id:product_id,location:location,quantity:quantity,notes:notes},
                                   type: 'get',
                                   success:function(data)
                                   {
-                                    // alert("jfhdhj");
-                                    alert(data);
+                                    // alert(data);
 
                                   },
-                                });
-
-                               $('#table_content').html('');
-                              // alert("hjdfghj");
+                              });
+                              alert("Modified Successfully");
+                              $('#edit_details').val('');
+                              $('#table_content').html('');
                             }
                           },
                         });
@@ -586,17 +416,17 @@
                      <img src="images/user.png" width="48" height="48" alt="User" />
                  </div>
                  <div class="info-container">
-                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
-                     <div class="email">{{{Auth::user()->email}}}</div>
+                     <div class="name" style="color:white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
+                     <div class="email" style="color:white;">{{{Auth::user()->email}}}</div>
                      <div class="btn-group user-helper-dropdown">
                          <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                          <ul class="dropdown-menu pull-right">
-                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                             <!-- <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
                              <li role="seperator" class="divider"></li>
                              <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
                              <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
                              <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                             <li role="seperator" class="divider"></li>
+                             <li role="seperator" class="divider"></li> -->
                              <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="material-icons">input</i>Sign Out</a></li>
                              <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                  {{ csrf_field() }}
@@ -620,13 +450,13 @@
                      @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                      <li class="">
                          <a href="{{ url('/register') }}">
-                             <i class="material-icons">home</i>
+                             <i class="material-icons">assignment_ind</i>
                              <span>Registration</span>
                          </a>
                      </li>
                      <li >
                          <a href="javascript:void(0);" class="menu-toggle">
-                             <i class="material-icons">dns</i>
+                             <i class="material-icons">shopping_basket</i>
                              <span>Items</span>
                          </a>
                          <ul class="ml-menu">
@@ -641,10 +471,24 @@
                              </li>
                          </ul>
                      </li>
+                     <li>
+                         <a href="javascript:void(0);" class="menu-toggle">
+                             <i class="material-icons">euro_symbol</i>
+                             <span>Purchase</span>
+                         </a>
+                         <ul class="ml-menu">
+                             <li >
+                                 <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                             </li>
+                             <li>
+                                 <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                             </li>
+                         </ul>
+                     </li>
                      @endif
                      <li class="active">
                           <a href="javascript:void(0);" class="menu-toggle">
-                             <i class="material-icons">reorder</i>
+                             <i class="material-icons">line_style</i>
                              <span>Stock</span>
                          </a>
                          <ul class="ml-menu">
@@ -659,12 +503,11 @@
                              <li>
                                  <a href="{!! url('/stockview'); !!}">Stock View</a>
                              </li>
-
                          </ul>
                      </li>
                      <li>
                          <a href="javascript:void(0);" class="menu-toggle">
-                           <i class="material-icons">reorder</i>
+                           <i class="material-icons">shopping_cart</i>
                            <span>Sales</span>
                          </a>
                          <ul class="ml-menu">
@@ -716,18 +559,16 @@
                           <div class="body" >
                               <div class="row clearfix">
                                 <!-- <div class="col-md-2"></div> -->
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                       <div class="input-group">
                                           <p>
                                               <b>Supplier</b>
                                           </p>
                                           <div class="form-line">
-                                              <!-- <input list="name" class="form-control date" id="supplier" name="supplier"> -->
+                                              <input list="name" class="form-control date" id="supplier" name="supplier">
                                               <input list="name" class="form-control date" id="supplier" name="supplier">
                                               <datalist id="name">
-                                                  @foreach($data4 as $item)
-                                                       <option> {{$item->supplier}}</option>
-                                                  @endforeach
+
                                               </datalist>
                                           </div>
 
@@ -763,7 +604,7 @@
                                           </div>
                                       </div>
                                   </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div> -->
                                   <div class="col-md-3">
                                       <div class="input-group">
                                           <p>
@@ -777,6 +618,7 @@
                                                 @endforeach
                                               </datalist> -->
                                                 <select class="form-control" id="prod_name" name="prod_name" data-placement="bottom" data-toggle="popover">
+                                                       <option></option>
                                                   @foreach($data3 as $item)
                                                        <option> {{$item->itemname}}</option>
                                                   @endforeach
@@ -795,7 +637,8 @@
                                           </div>
                                       </div>
                                   </div>
-                                  <div class="col-md-2" id="hide_product">
+                                  <!-- <div class="col-md-2" id="hide_product"> -->
+                                    <div class="col-md-2" >
                                       <div class="input-group">
                                           <p>
                                               <b>Product Id</b>
@@ -833,14 +676,15 @@
                                           <thead>
                                               <tr>
                                                   <th>S.No</th>
-                                                  <th>Supplier</th>
+                                                  <!-- <th>Supplier</th>
                                                   <th>Invoice Number</th>
                                                   <th>Billed Date</th>
-                                                  <th>Received Date</th>
+                                                  <th>Received Date</th> -->
                                                   <th>Product Name</th>
                                                   <th>Product Id</th>
                                                   <th>Barcode</th>
                                                   <th>Quantity</th>
+                                                  <th>Action</th>
                                               </tr>
                                           </thead>
                                           <tbody>
@@ -964,11 +808,9 @@
                                                                 <tr>
                                                                     <!-- <th>S.No</th> -->
                                                                     <th>Product Name</th>
+                                                                    <th>Product Id</th>
+                                                                    <th>barcode</th>
                                                                     <th>Location</th>
-                                                                    <th>Supplier</th>
-                                                                    <th>Invoice No.</th>
-                                                                    <th>Billed Date</th>
-                                                                    <th>Received Date</th>
                                                                     <th>Quantity</th>
                                                                     <th>Notes</th>
                                                                     <th>Action</th>
@@ -990,7 +832,7 @@
 
 </section>
 
-    <script src="/script/sales.js"></script>
+    <script src="script/sales.js"></script>
     <!-- Jquery Core Js -->
     <script src="plugins/jquery/jquery.min.js"></script>
 
@@ -998,7 +840,7 @@
     <script src="plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <!-- <script src="plugins/bootstrap-select/js/bootstrap-select.js"></script> -->
 
     <!-- Slimscroll Plugin Js -->
     <script src=" plugins/jquery-slimscroll/jquery.slimscroll.js"></script>

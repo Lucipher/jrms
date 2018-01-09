@@ -86,13 +86,13 @@
                   @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                   <li class="">
                       <a href="{{ url('/register') }}">
-                          <i class="material-icons">home</i>
+                          <i class="material-icons">assignment_ind</i>
                           <span>Registration</span>
                       </a>
                   </li>
                   <li>
                       <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">dns</i>
+                          <i class="material-icons">shopping_basket</i>
                           <span>Items</span>
                       </a>
                       <ul class="ml-menu">
@@ -107,10 +107,24 @@
                           </li>
                       </ul>
                   </li>
+                  <li>
+                      <a href="javascript:void(0);" class="menu-toggle">
+                          <i class="material-icons">euro_symbol</i>
+                          <span>Purchase</span>
+                      </a>
+                      <ul class="ml-menu">
+                          <li >
+                              <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                          </li>
+                          <li>
+                              <a href="{{ url('purchase_view') }}">Purchase-View</a>
+                          </li>
+                      </ul>
+                  </li>
                   @endif
                   <li>
                        <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">reorder</i>
+                          <i class="material-icons">line_style</i>
                           <span>Stock</span>
                       </a>
                       <ul class="ml-menu">
@@ -133,7 +147,7 @@
                   </li>
                   <li>
                       <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">reorder</i>
+                        <i class="material-icons">shopping_cart</i>
                         <span>Sales</span>
                       </a>
                       <ul class="ml-menu">
@@ -285,7 +299,7 @@
           <i class="material-icons">view_module</i>
         </div>
         <div class="content">
-          <div class="text">Total no. of Products</div>
+          <div class="text">Total Products</div>
           <div class="number">{{$count}}</div>
         </div>
       </div>
@@ -297,7 +311,7 @@
           <i class="material-icons">&#8377;</i>
         </div>
         <div class="content">
-          <div class="text">Sales for the Day</div>
+          <div class="text">Sale of the Day</div>
           <div class="number">{{$selectTotal}}</div>
         </div>
       </div>
@@ -319,7 +333,7 @@
       <div class="row clearfix">
         <div class="card col-md-12">
           <div class="header">
-            <h2>Input Management</h2>
+            <h2>Entry Management</h2>
           </div>
           <div class="body">
 
@@ -331,14 +345,21 @@
                           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 form-control-label">
                             <label for="newcat">Category</label>
                           </div>
-                          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
                             <div class="form-group">
                               <div class="form-line">
                                   <input type="text" name="newcat" id="newcat" class="form-control" placeholder="Enter New Category" required>
                               </div>
+                            </div>
+                          </div>
+
+
+                          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
+                            <div class="form-group">
                               <input type="submit" name="cat" id="cat" value="Add Category" class="align-right btn btn-primary m-t-5 waves-effect"></input>
                             </div>
                           </div>
+
                           </form>
 
 
@@ -347,17 +368,21 @@
                             <div class="col-md-3 form-control-label">
                               <label for="categoryname">Select Category</label>
                             </div>
+
                             <div class="col-md-9">
-                              <div class="input-group">
-                                <div class="form-line" data-placement="bottom" data-toggle="popover">
-                                  <select class="form-control input-sm" id="categoryname" name="categoryname" data-placement="bottom" data-toggle="popover">
-                                    @foreach($category as $category)
-                                      <option value="{{$category->category}}">{{$category->category}}</option>
-                                    @endforeach
-                                  </select>
+                              <div class="col-md-8">
+                                <div class="input-group">
+                                  <div class="form-line" data-placement="bottom" data-toggle="popover">
+                                    <select class="form-control input-sm" id="categoryname" name="categoryname" data-placement="bottom" data-toggle="popover">
+                                      @foreach($category as $category)
+                                        <option value="{{$category->category}}">{{$category->category}}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
                                 </div>
                               </div>
                             </div>
+
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 form-control-label">
                               <label for="subcat">Sub-Category</label>
                             </div>
@@ -577,7 +602,7 @@
   <script src="{{ URL::asset('/plugins/jquery-datatable/extensions/export/buttons.print.min.js')}}"></script>
   <script src="{{ URL::asset('/js/admin.js')}}"></script>
   <script src="{{ URL::asset('/js/pages/tables/jquery-datatable.js')}}"></script>
-  <script src="{{ URL::asset('/script/sales.js')}}"></script>
+  <script src="{{ URL::asset('script/sales.js')}}"></script>
   <script src="{{ URL::asset('/js/demo.js')}}"></script>
 
 

@@ -8,19 +8,6 @@
   <link rel="icon" type="image/x-icon" href="{{ URL::asset('favicon.ico')}}">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-  <!-- <link href="plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <link href="plugins/node-waves/waves.css" rel="stylesheet" />
-  <link href="plugins/animate-css/animate.css" rel="stylesheet" />
-  <link href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
-  <link href="plugins/dropzone/dropzone.css" rel="stylesheet">
-  <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
-  <link href="plugins/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet">
-  <link href="plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
-  <link href="plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-  <link href="plugins/nouislider/nouislider.min.css" rel="stylesheet" />
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/themes/all-themes.css" rel="stylesheet" />
-  <script src="plugins/jquery/jquery.js"></script> -->
   <link rel="stylesheet" href="{{ URL::asset('/plugins/bootstrap/css/bootstrap.css')}}">
   <link rel="stylesheet" href="{{ URL::asset('/plugins/node-waves/waves.css')}}">
   <link rel="stylesheet" href="{{ URL::asset('/plugins/animate-css/animate.css')}}">
@@ -40,6 +27,7 @@
 <body class="theme-cyan">
   <script>
     $('document').ready(function() {
+
       $('#modify').on('click',function() {
         var chkvalue = $('#wrapper').val();
         var bnumber = $('#bnumber').val();
@@ -57,18 +45,19 @@
         var mrp= $('#mrp').val();
         var disc1= $('#disc1').val();
         var disc2= $('#disc2').val();
+
         var discvalue= $('#discvalue').val();
-        var finalprice= $('#finalprice').val();
-        var url1 = 'modify';
+        var finalprice= $('#finalprice1').val();
+        // var url1 = './modify';
         $.ajax({
-          url: url1,
+          url: './modify',
           data: {chkvalue: chkvalue, bnumber: bnumber, itemname: itemname, openstock: openstock, minstock: minstock,
           isactive: isactive, notforsale: notforsale, ispurchased: ispurchased, online: online, categoryname: categoryname,
         subcategoryname: subcategoryname, desc: desc, mrp: mrp, disc1: disc1, disc2: disc2, discvalue: discvalue, finalprice: finalprice},
           type: 'GET',
           success: function(data)
           {
-            //alert(data);
+            // alert(data);
           },
           error: function()
           {
@@ -77,23 +66,39 @@
         });
       });
 
+
+
       $('#discvalue').on('change',function() {
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
-        var finalprice = mrp-discvalue;
-        $('#finalprice').text(finalprice);
-        var status = $('input[type="radio"][id="disc1"]:checked').val();
-        if (status == 'rupees') {
-          var finalprice = mrp-discvalue;
-          // $('#finalprice').text(finalprice);
-          document.getElementById("finalprice").value = finalprice;
-        }
-        else if (status == 'percent') {
-          var temp = (discvalue/100)*mrp;
-          var finalprice = mrp-temp;
-          //$('#finalprice').text(finalprice);
-          document.getElementById("finalprice").value = finalprice;
-        }
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
+        // var finalprice = mrp-discvalue;
+        // $('#finalprice').text(finalprice);
+        var status = $('input[type="radio"][name="disc"]:checked').val();
+          if (status != 'percent') {
+            if(discvalue>=mrp){
+              alert("Enter discount value less than MRP");
+              document.getElementById("discvalue").value = "";
+              $('#discvalue').focus();
+            } else {
+              var finalprice = mrp-discvalue;
+              // $('#finalprice').text(finalprice);
+              document.getElementById("finalprice").value = finalprice;
+              document.getElementById("finalprice1").value = finalprice;
+            }
+          }
+          else if (status == 'percent') {
+            if(discvalue>100) {
+              alert("Discount percentage value should be less than 100.");
+              document.getElementById("discvalue").value = "";
+              $('#discvalue').focus();
+            } else {
+              var temp = (discvalue/100)*mrp;
+              var finalprice = mrp-temp;
+              //$('#finalprice').text(finalprice);
+              document.getElementById("finalprice").value = finalprice;
+              document.getElementById("finalprice1").value = finalprice;
+            }
+          }
       });
 
       // $('#wrapper').on('keyup',function() {
@@ -134,24 +139,37 @@
       $('#disc1').on('change',function() {
         //var status = $('input[type="radio"][id="disc1"]:checked').val();
         var status = "rupees";
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
+
         // if (status =='rupees') {
           var finalprice = mrp-discvalue;
           //$('#finalprice').text(finalprice);
           document.getElementById("finalprice").value = finalprice;
+          document.getElementById("finalprice1").value = finalprice;
         // } else if (status == 'percent') {
         //   var temp = (discvalue/100)*mrp;
         //   var finalprice = mrp-temp;
         //   $('#finalprice').text(finalprice);
         // }
+
+      });
+
+      $('input[type="checkbox"][id="isactive"]').click(function(){
+          if($(this).is(":checked")){
+              $('#notforsale').prop("disabled", false);
+          }
+          else if($(this).is(":not(:checked)")){
+            $('#notforsale').attr('checked', false);
+              $('#notforsale').prop("disabled", true);
+          }
       });
 
       $('#disc2').on('change',function() {
         //var status = $('input[type="radio"][id="disc2"]:checked').val();
         var status = "percent";
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
         // if (status =='rupees') {
         //   var finalprice = mrp-discvalue;
         //   $('#finalprice').text(finalprice);
@@ -160,21 +178,54 @@
           var finalprice = mrp-temp;
           //$('#finalprice').text(finalprice);
           document.getElementById("finalprice").value = finalprice;
+          document.getElementById("finalprice1").value = finalprice;
         // }
       });
 
-      $('#mrp').on('change',function() {
-        var status = $('input[type="radio"][id="disc1"]:checked').val();
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
-        if (status =='rupees') {
-          var finalprice = mrp-discvalue;
-          $('#finalprice').text(finalprice);
-        } else if (status == 'percent') {
-          var temp = (discvalue/100)*mrp;
-          var finalprice = mrp-temp;
-          //$('#finalprice').text(finalprice);
-          document.getElementById("finalprice").value = finalprice;
+      $(document).on('click','#disc2',function() {
+        var discvalue = Number($('#discvalue').val());
+        if(discvalue >= 100) {
+          alert("Percentage should be less than 100");
+          document.getElementById("discvalue").value = "";
+          $('#discvalue').focus();
+        }
+      });
+
+      // $('#mrp').on('change',function() {
+      //   var status = $('input[type="radio"][id="disc1"]:checked').val();
+      //   console.log(status);
+      //   var mrp = $('#mrp').val();
+      //   var discvalue = $('#discvalue').val();
+      //   if (status =='rupees') {
+      //     var finalprice = mrp-discvalue;
+      //     $('#finalprice').text(finalprice);
+      //   } else if (status == 'percent') {
+      //     var temp = (discvalue/100)*mrp;
+      //     var finalprice = mrp-temp;
+      //     //$('#finalprice').text(finalprice);
+      //     document.getElementById("finalprice").value = finalprice;
+      //   }
+      // });
+      $('#mrp').change(function(){
+        var status = $("input[name='disc']:checked").val();
+        var mrp = Number($('#mrp').val());
+        if(mrp == "" || mrp == 0.00){
+          alert("Please enter a value");
+          $('#mrp').focus();
+        } else {
+        var discvalue = Number($('#discvalue').val());
+        if (status !='percent') {
+            var finalprice = mrp-discvalue;
+            // $('#finalprice').text(finalprice);
+            document.getElementById("finalprice").value = finalprice;
+            document.getElementById("finalprice1").value = finalprice;
+          } else if (status == 'percent') {
+            var temp = (discvalue/100)*mrp;
+            var finalprice = mrp-temp;
+            //$('#finalprice').text(finalprice);
+            document.getElementById("finalprice").value = finalprice;
+            document.getElementById("finalprice1").value = finalprice;
+          }
         }
       });
     });
@@ -241,13 +292,13 @@
                 @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                 <li class="">
                     <a href="{{ url('/register') }}">
-                        <i class="material-icons">home</i>
+                        <i class="material-icons">assignment_ind</i>
                         <span>Registration</span>
                     </a>
                 </li>
                 <li class="active">
                     <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">dns</i>
+                        <i class="material-icons">shopping_basket</i>
                         <span>Items</span>
                     </a>
                     <ul class="ml-menu">
@@ -262,10 +313,25 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">euro_symbol</i>
+                        <span>Purchase</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li >
+                            <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                        </li>
+                    </ul>
+                </li>
                 @endif
+
                 <li>
                      <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">reorder</i>
+                        <i class="material-icons">line_style</i>
                         <span>Stock</span>
                     </a>
                     <ul class="ml-menu">
@@ -287,7 +353,7 @@
                 </li>
                 <li>
                     <a href="javascript:void(0);" class="menu-toggle">
-                      <i class="material-icons">reorder</i>
+                      <i class="material-icons">shopping_cart</i>
                       <span>Sales</span>
                     </a>
                     <ul class="ml-menu">
@@ -339,7 +405,8 @@
 
           <div class="body">
               <div class="row clearfix">
-              {{ Form::open(array('name'=>'myform','method'=>'GET','class'=>'form-horizontal','data-parsley-validate'=>'','files'=>true))}}
+              {{ Form::open(array('name'=>'myform','method'=>'GET','class'=>'form-horizontal','data-parsley-validate'=>''))}}
+              <!-- {{csrf_field()}} -->
                 <span class="col-md-6">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 form-control-label">
                     <label for="wrapper">Enter details</label>
@@ -436,11 +503,13 @@
                             //$('#disc1').val(disc1);
                             //$('#disc2').val(disc2);
                           }
-                          else if(disk1 = "percent") {
-                            $('#disc2').checked = true;
+                          else if(disc1 = "percent") {
+                            // $('#disc2').checked = true;
+                            $('#disc2').prop('checked', true).button("refresh");
                           }
                           $('#discvalue').val(discvalue);
                           $('#finalprice').val(finalprice);
+                          $('#finalprice1').val(finalprice);
                         },
                         error: function()
                         {
@@ -499,10 +568,10 @@
                     <label for="selch">Select Options</label>
                   </div>
                   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8 demo-checkbox">
-                    <input type="checkbox" id="isactive" name="isactive" class="chk-col-blue" disabled><label for="isactive">Is active</label>
-                    <input type="checkbox" id="notforsale" name="notforsale" class="chk-col-blue" disabled><label for="notforsale">Not for sale</label>
-                    <input type="checkbox" id="ispurchased" name="ispurchased" class="chk-col-blue" disabled><label for="ispurchased">Is purchased</label>
-                    <input type="checkbox" id="online" name="online" class="chk-col-blue" disabled><label for="online">Only for online</label>
+                    <input type="checkbox" id="isactive" name="isactive" class="filled-in chk-col-blue" disabled><label for="isactive">Is active</label>
+                    <input type="checkbox" id="notforsale" name="notforsale" class="filled-in chk-col-blue" disabled><label for="notforsale">Not for sale</label>
+                    <input type="checkbox" id="ispurchased" name="ispurchased" class="filled-in chk-col-blue" disabled><label for="ispurchased">Is purchased</label>
+                    <input type="checkbox" id="online" name="online" class="filled-in chk-col-blue" disabled><label for="online">Only for online</label>
                   </div><br>
 
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 form-control-label">
@@ -581,12 +650,12 @@
                     <div class="input-group">
                       <div class="input-group">
                         <div class="form-line">
-                            <input type="number" name="discvalue" id="discvalue" class="form-control" min="0" disabled>
+                            <input type="number" name="discvalue" id="discvalue" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0" disabled>
                         </div>
                       </div>
                       <span class="input-group-addon beautiful">
-                          <input type="radio" id="disc1" name="disc1" value="rupees" class="with-gap radio-col-blue"><label for="disc1"><b>Rs.</b></label>
-                          <input type="radio" id="disc2" name="disc1" value="percent" class="with-gap radio-col-blue"><label for="disc2"><b>%</b></label>
+                          <input type="radio" id="disc1" name="disc" value="rupees" class="with-gap radio-col-blue"><label for="disc1"><b>Rs.</b></label>
+                          <input type="radio" id="disc2" name="disc" value="percent" class="with-gap radio-col-blue"><label for="disc2"><b>%</b></label>
                       </span>
                     </div>
                   </div>
@@ -598,10 +667,11 @@
                       <div class="input-group">
                         <div class="form-line">
                             <input type="number" name="finalprice" id="finalprice" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0" disabled>
+                            <input type="hidden" name="finalprice1" id="finalprice1" class="form-control">
                         </div>
                       </div>
                     </div>
-                    <input type="hidden" name="finalprice" id="finalprice" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0">
+
                     <script>
                       $("#categoryname").change(function(){
                         var temp = $('#categoryname :selected').html();

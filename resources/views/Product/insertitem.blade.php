@@ -40,62 +40,142 @@
 <body class="theme-cyan">
   <script>
     $(document).ready(function() {
-      $(document).on('change','#mrp',function() {
-        var status = $('input[type="radio"][id="disc1"]:checked').val();
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
-        if(mrp == '0.00'){
-          alert("MRP should not be Zero.");
+      // $(document).on('change','#mrp',function() {
+      //   var status = $('input[type="radio"][id="disc1"]:checked').val();
+      //   var mrp = Number($('#mrp').val());
+      //   var discvalue = $('#discvalue').val();
+      //   if(mrp == '0.00'){
+      //     alert("MRP should not be Zero.");
+      //     $('#mrp').focus();
+      //   }
+      //   else {
+      //     if (status =='rupees')
+      //     {
+      //       var finalprice = mrp-discvalue;
+      //       // $('#finalprice').text((finalprice).toFixed(2));
+      //       $('#finalprice').val(finalprice);
+      //     }
+      //     else if (status == 'percent')
+      //     {
+      //       var temp = (discvalue/100)*mrp;
+      //       var finalprice = mrp-temp;
+      //       // $('#finalprice').text((finalprice).toFixed(2));
+      //       $('#finalprice').val(finalprice);
+      //     }
+      //   }
+      // });
+      $('#mrp').change(function(){
+        (function(el){el.value=parseFloat(el.value).toFixed(2);})(this)
+        var status = $("input[name='disc']:checked").val();
+        var mrp = Number($('#mrp').val());
+        if(mrp == "" || mrp <= 0 || mrp == 0.00){
+          alert("Please enter a value");
+          // document.getElementById("mrp").value = "0";
+          $('#mrp').val('');
           $('#mrp').focus();
-        }
-        else {
-          if (status =='rupees')
-          {
+        } else {
+        var discvalue = Number($('#discvalue').val());
+        if (status !='percent') {
             var finalprice = mrp-discvalue;
-            // $('#finalprice').text((finalprice).toFixed(2));
-            $('#finalprice').val(finalprice);
-          }
-          else if (status == 'percent')
-          {
+            // $('#finalprice').text(finalprice);
+            document.getElementById("finalprice").value = finalprice;
+            document.getElementById("finalprice1").value = finalprice;
+
+          } else if (status == 'percent') {
             var temp = (discvalue/100)*mrp;
+
             var finalprice = mrp-temp;
-            // $('#finalprice').text((finalprice).toFixed(2));
-            $('#finalprice').val(finalprice);
+            //$('#finalprice').text(finalprice);
+            document.getElementById("finalprice").value = finalprice;
+            document.getElementById("finalprice1").value = finalprice;
           }
         }
       });
 
-      $(document).on('change','#discvalue',function() {
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
-        var finalprice = mrp-discvalue;
-        // $('#finalprice').text((finalprice).toFixed(2));
-        $('#finalprice').val(finalprice);
-        if(discvalue>mrp){
-          alert("Discount Value must be less than MRP");
-          document.getElementById("discvalue").value= "";
-          document.getElementById("finalprice").value= "";
-          $("#discvalue").focus();
+      $("#discvalue").on('keydown', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+          // e.preventDefault();
+          // alert("TAB Pressed");
+          $('#disc1').attr('checked', true);
         }
-        else {
-          var status = $('input[type="radio"][id="disc1"]:checked').val();
-          if (status =='rupees') {
-            var finalprice = mrp-discvalue;
-            // $('#finalprice').text((finalprice).toFixed(2));
-            $('#finalprice').val(finalprice);
-          } else if (status == 'percent') {
-            var temp = (discvalue/100)*mrp;
-            var finalprice = mrp-temp;
-            // $('#finalprice').text((finalprice).toFixed(2));
-            $('#finalprice').val(finalprice);
+      });
+
+      //$('input[type="checkbox"][id="isactive1"]').click(function(){
+        $('input[type="checkbox"][id="isactive1"]').click(function(){
+            if($(this).is(":checked")){
+                $('#notforsale').prop("disabled", false);
+            }
+            else if($(this).is(":not(:checked)")){
+                $('#notforsale').attr('checked', false);
+                $('#notforsale').prop("disabled", true);
+            }
+        });
+      //});
+
+      // $(document).on('change','#discvalue',function() {
+      //   var mrp = Number($('#mrp').val());
+      //   var discvalue = Number($('#discvalue').val());
+      //   // var finalprice = mrp-discvalue;
+      //   // $('#finalprice').text((finalprice).toFixed(2));
+      //   // $('#finalprice').val(finalprice);
+      //   if(discvalue > mrp){
+      //     alert("Discount value must be less than MRP");
+      //     document.getElementById("discvalue").value= "";
+      //     document.getElementById("finalprice").value= "";
+      //     $("#discvalue").focus();
+      //   }
+      //   else {
+      //     var status = $('input[type="radio"][id="disc1"]:checked').val();
+      //     if (status =='rupees') {
+      //       var finalprice = mrp-discvalue;
+      //       // $('#finalprice').text((finalprice).toFixed(2));
+      //       $('#finalprice').val(finalprice);
+      //     } else if (status == 'percent') {
+      //       var temp = (discvalue/100)*mrp;
+      //       var finalprice = mrp-temp;
+      //       // $('#finalprice').text((finalprice).toFixed(2));
+      //       $('#finalprice').val(finalprice);
+      //     }
+      //   }
+      // });
+      $('#discvalue').on('change',function() {
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
+        // var finalprice = mrp-discvalue;
+        // $('#finalprice').text(finalprice);
+        var status = $('input[type="radio"][name="disc"]:checked').val();
+          if (status != 'percent') {
+            if(discvalue>=mrp){
+              alert("Enter discount value less than MRP");
+              document.getElementById("discvalue").value = "";
+              $('#discvalue').focus();
+            } else {
+              var finalprice = mrp-discvalue;
+              // $('#finalprice').text(finalprice);
+              document.getElementById("finalprice").value = finalprice;
+              document.getElementById("finalprice1").value = finalprice;
+            }
           }
-        }
+          else if (status == 'percent') {
+            if(discvalue>100){
+              alert("Discount percentage value should be less than 100.");
+              document.getElementById("discvalue").value = "";
+              $('#discvalue').focus();
+            } else {
+              var temp = (discvalue/100)*mrp;
+              var finalprice = mrp-temp;
+              //$('#finalprice').text(finalprice);
+              document.getElementById("finalprice").value = finalprice;
+              document.getElementById("finalprice1").value = finalprice;
+            }
+          }
       });
 
       $(document).on('change','#disc1',function() {
         var status = $('input[type="radio"][id="disc1"]:checked').val();
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
         if (status =='rupees') {
           var finalprice = mrp-discvalue;
           // $('#finalprice').text((finalprice).toFixed(2));
@@ -105,22 +185,35 @@
           var finalprice = mrp-temp;
           // $('#finalprice').text((finalprice).toFixed(2));
           $('#finalprice').val(finalprice);
+        }
+      });
+
+      $(document).on('click','#disc2',function() {
+        var discvalue = Number($('#discvalue').val());
+        if(discvalue >= 100) {
+          alert("Percentage should be less than 100");
+          document.getElementById("discvalue").value = "";
+          $('#discvalue').focus();
         }
       });
 
       $(document).on('change','#disc2',function() {
         var status = $('input[type="radio"][id="disc2"]:checked').val();
-        var mrp = $('#mrp').val();
-        var discvalue = $('#discvalue').val();
+        var mrp = Number($('#mrp').val());
+        var discvalue = Number($('#discvalue').val());
         if (status =='rupees') {
           var finalprice = mrp-discvalue;
           // $('#finalprice').text((finalprice).toFixed(2));
-          $('#finalprice').val(finalprice);
+          // $('#finalprice').val(finalprice);
+          document.getElementById("finalprice").value = finalprice;
+          document.getElementById("finalprice1").value = finalprice;
         } else if (status == 'percent') {
           var temp = (discvalue/100)*mrp;
           var finalprice = mrp-temp;
           // $('#finalprice').text((finalprice).toFixed(2));
-          $('#finalprice').val(finalprice);
+          // $('#finalprice').val(finalprice);
+          document.getElementById("finalprice").value = finalprice;
+          document.getElementById("finalprice1").value = finalprice;
         }
       });
 
@@ -197,13 +290,13 @@
                     @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                     <li class="">
                         <a href="{{ url('/register') }}">
-                            <i class="material-icons">home</i>
+                            <i class="material-icons">assignment_ind</i>
                             <span>Registration</span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">dns</i>
+                            <i class="material-icons">shopping_basket</i>
                             <span>Items</span>
                         </a>
                         <ul class="ml-menu">
@@ -218,10 +311,25 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">euro_symbol</i>
+                            <span>Purchase</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li >
+                                <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
+
                     <li>
                          <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">reorder</i>
+                            <i class="material-icons">line_style</i>
                             <span>Stock</span>
                         </a>
                         <ul class="ml-menu">
@@ -243,7 +351,7 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">reorder</i>
+                          <i class="material-icons">shopping_cart</i>
                           <span>Sales</span>
                         </a>
                         <ul class="ml-menu">
@@ -343,7 +451,7 @@
                   </div>
                   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8 demo-checkbox">
                     <input type="checkbox" id="isactive1" name="isactive1" class="filled-in chk-col-blue"><label for="isactive1">Is active</label>
-                    <input type="checkbox" id="notforsale" name="notforsale" class="filled-in chk-col-blue"><label for="notforsale">Not for sale</label>
+                    <input type="checkbox" id="notforsale" name="notforsale" class="filled-in chk-col-blue" disabled="true"><label for="notforsale">Not for sale</label>
                     <input type="checkbox" id="ispurchased" name="ispurchased" class="filled-in chk-col-blue"><label for="ispurchased">Is purchased</label>
                     <input type="checkbox" id="online" name="online" class="filled-in chk-col-blue"><label for="online">Only for online</label>
                   </div><br>
@@ -436,7 +544,7 @@
                         }
                       }
                     </script> -->
-
+<!-- onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" -->
 
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 form-control-label">
                     <label for="mrp">MRP</label>
@@ -444,7 +552,7 @@
                   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                     <div class="input-group">
                       <div class="form-line">
-                          <input type="number" name="mrp" id="mrp" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" placeholder="00.00" min="0" required>
+                          <input type="number" name="mrp" id="mrp" class="form-control"  placeholder="00.00" min="0" onchange="validate();" required>
                       </div>
                     </div>
                   </div>
@@ -456,12 +564,12 @@
                     <div class="input-group">
                       <div class="input-group">
                         <div class="form-line">
-                            <input type="number" name="discvalue" id="discvalue" class="form-control" min="0" required>
+                            <input type="number" name="discvalue" id="discvalue" class="form-control" min="0" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" required>
                         </div>
                       </div>
                       <span class="input-group-addon beautiful">
-                          <input type="radio" id="disc1" name="disc1" value="rupees" class="with-gap radio-col-blue"><label for="disc1"><b>&#8377;</b></label>
-                          <input type="radio" id="disc2" name="disc1" value="percent" class="with-gap radio-col-blue"><label for="disc2"><b>%</b></label>
+                          <input type="radio" id="disc1" name="disc" value="rupees" class="with-gap radio-col-blue"><label for="disc1"><b>&#8377;</b></label>
+                          <input type="radio" id="disc2" name="disc" value="percent" class="with-gap radio-col-blue"><label for="disc2"><b>%</b></label>
                       </span>
                     </div>
                   </div>
@@ -472,10 +580,12 @@
                   <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                     <div class="input-group">
                       <div class="form-line">
-                          <input type="number" name="finalprice" id="finalprice" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0" placeholder="0">
+                          <input type="number" name="finalprice" id="finalprice" class="form-control" disabled onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0" placeholder="0">
+                          <input type="hidden" name="finalprice1" id="finalprice1" class="form-control">
                       </div>
                     </div>
                   </div>
+
                   <!-- <input type="hidden" name="finalprice" id="finalprice" class="form-control" onchange="(function(el){el.value=parseFloat(el.value).toFixed(2);})(this)" min="0"> -->
                   <!-- <label for="finalprice" name="finalprice" id="finalprice">Final Price</label> -->
 

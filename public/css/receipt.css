@@ -28,6 +28,7 @@ body
 	background-repeat: no-repeat;
 	padding:15px;
 }
+
 #JRDetails
 {
 	background-color: #DCDCDC;
@@ -35,8 +36,8 @@ body
 	color: black;
 	height: 120px;
 	width: 8.3in;
-
 }
+
 #InvoiceDetails
 {
 	background-color: white;
@@ -45,6 +46,7 @@ body
 	height: 230px;
 	width: 8.3in;
 }
+
 #differentiate
 {
 	background-color: #DCDCDC;
@@ -74,6 +76,11 @@ body
 	padding-left: 0.15in;
 	text-align: left;
 }
+.textaligncenter
+{
+	text-align: center;
+}
+
 .textalignright
 {
   padding: 0.10in;

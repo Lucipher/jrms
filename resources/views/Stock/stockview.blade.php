@@ -37,25 +37,8 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
-  <!-- <script src="jquery-ui.js"></script> -->
-  <style type="text/css">
-  body
-  {
-    counter-reset: Serial;           /* Set the Serial counter to 0 */
-  }
+  <script src="jquery-ui.js"></script>
 
-  table
-  {
-    border-collapse: separate;
-  }
-
-  tr td:first-child:before
-  {
-    counter-increment: Serial;      /* Increment the Serial counter */
-    content: counter(Serial); /* Display the counter */
-  }
-
-  </style>
 
   <script type="text/javascript">
   // function show(param_div_id)
@@ -65,29 +48,45 @@
   $(document).ready(function()
      {
        $("#transferview").hide();
-       $("#returnview").hide();
+       $("#supplierview").hide();
 
        $( "#stock" ).click(function()
        {
           $("#transferview").hide();
-          $("#returnview").hide();
+          $("#supplierview").hide();
           $("#stockview").show();
        });
        $( "#transfer" ).click(function()
        {
           $("#transferview").show();
-          $("#returnview").hide();
+          $("#supplierview").hide();
           $("#stockview").hide();
       });
-      $( "#return" ).click(function()
+      $( "#supplier" ).click(function()
        {
             $("#transferview").hide();
-            $("#returnview").show();
+            $("#supplierview").show();
             $("#stockview").hide();
       });
      });
   </script>
+  <style type="text/css">
+      body
+      {
+          counter-reset: Serial;
+      }
 
+      #data_table3
+      {
+          border-collapse: separate;
+      }
+
+      #data_table3 tr td:first-child:before
+      {
+          counter-increment: Serial;
+          content: counter(Serial);
+      }
+  </style>
 </head>
 
 <body class="theme-cyan" >
@@ -157,13 +156,13 @@
                    @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                    <li class="">
                        <a href="{{ url('/register') }}">
-                           <i class="material-icons">home</i>
+                           <i class="material-icons">assignment_ind</i>
                            <span>Registration</span>
                        </a>
                    </li>
                    <li >
                        <a href="javascript:void(0);" class="menu-toggle">
-                           <i class="material-icons">dns</i>
+                           <i class="material-icons">shopping_basket</i>
                            <span>Items</span>
                        </a>
                        <ul class="ml-menu">
@@ -178,10 +177,24 @@
                            </li>
                        </ul>
                    </li>
+                   <li>
+                       <a href="javascript:void(0);" class="menu-toggle">
+                           <i class="material-icons">euro_symbol</i>
+                           <span>Purchase</span>
+                       </a>
+                       <ul class="ml-menu">
+                           <li >
+                               <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                           </li>
+                           <li>
+                               <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                           </li>
+                       </ul>
+                   </li>
                    @endif
                    <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
-                           <i class="material-icons">reorder</i>
+                           <i class="material-icons">line_style</i>
                            <span>Stock</span>
                        </a>
                        <ul class="ml-menu">
@@ -193,6 +206,7 @@
                            <li>
                                <a href="{!! url('/transfer'); !!}">Stock Transfer</a>
                            </li>
+
                            <li class="active">
                                <a href="{!! url('/stockview'); !!}">Stock View</a>
                            </li>
@@ -201,7 +215,7 @@
                    </li>
                    <li>
                        <a href="javascript:void(0);" class="menu-toggle">
-                         <i class="material-icons">reorder</i>
+                         <i class="material-icons">shopping_cart</i>
                          <span>Sales</span>
                        </a>
                        <ul class="ml-menu">
@@ -228,12 +242,12 @@
            <!-- #Menu -->
            <!-- Footer -->
            <div class="legal">
-             <div class="copyright">
-                 &copy; 2017 <a href="">Jesus Redeems IT Dept.</a>
-             </div>
-             <div class="version">
-                 <b>Version: </b>Beta 0.1
-             </div>
+               <div class="copyright">
+                   &copy; 2016 - 2017 <a href="">Jesus Redeems IT Dept.</a>
+               </div>
+               <div class="version">
+                   <b>Version: </b> 1.0.0
+               </div>
            </div>
            <!-- #Footer -->
        </aside>
@@ -248,40 +262,35 @@
           <span>Stock</span></button>
           <button type="button" data-color="cyan" class="btn bg-blue-grey waves-effect" id="transfer" > <i class="material-icons">redo</i>
           <span>Stock Transfer</span></button>
-          <!-- <button type="button" data-color="cyan" class="btn bg-blue-grey waves-effect" id="return" > <i class="material-icons">undo</i>
-          <span>Supplier</span></button> -->
+          <button type="button" data-color="cyan" class="btn bg-blue-grey waves-effect" id="supplier" > <i class="material-icons">undo</i>
+          <span>Suppliers</span></button>
       </div>
       <div class="body">
 
       <div id="stockview">
       <div class="row-clearfix">
         <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table1">
+          <!-- <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table1"> -->
+            <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="data_table1">
             <thead>
               <tr>
-                <th>S.No</th>
+                <th>Product Id</th>
                 <th>Product Name</th>
                 <th>Barcode</th>
-                <th>Supplier</th>
-                <th>Invoice No</th>
-                <th>Billed Date</th>
-                <th>Received Date</th>
                 <th>Location</th>
                 <th>Quantity</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
               @foreach($data as $item)
               <tr class="item{{$item->id}}">
-                <td></td>
+                <td>{{$item->product_id}}</td>
                 <td>{{$item->product_name}}</td>
                 <td>{{$item->barcode}}</td>
-                <td>{{$item->supplier}}</td>
-                <td>{{$item->invoice_number}}</td>
-                <td>{{$item->billed_date}}</td>
-                <td>{{$item->received_date}}</td>
                 <td>{{$item->location}}</td>
                 <td>{{$item->quantity}}</td>
+                <td>{{$item->notes}}</td>
               </tr>
               @endforeach
             </tbody>
@@ -295,28 +304,29 @@
   <div id="transferview">
   <div class="row-clearfix">
   <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table2">
+    <!-- <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table2"> -->
+      <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="data_table2">
       <thead>
         <tr>
-          <th>S.No</th>
-          <th>Product Name</th>
           <th>Product Id</th>
+          <th>Product Name</th>
           <th>Barcode</th>
-          <th>From Location</th>
-          <th>To Location</th>
+          <th>Dispatch From</th>
+          <th>Dispatch To</th>
           <th>Quantity</th>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
         @foreach($data1 as $item1)
         <tr class="item1{{$item1->id}}">
-          <td></td>
+          <td>{{$item1->product_id}}</td>
           <td>{{$item1->product_name}}</td>
           <td>{{$item1->barcode}}</td>
-          <td>{{$item1->product_id}}</td>
           <td>{{$item1->from_location}}</td>
           <td>{{$item1->to_location}}</td>
           <td>{{$item1->quantity}}</td>
+          <td>{{$item1->notes}}</td>
         </tr>
         @endforeach
       </tbody>
@@ -327,29 +337,44 @@
 </div>
 
 
-<div id="returnview" >
+<div id="supplierview" >
 <div class="row-clearfix">
 <div class="table-responsive">
-  <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table3">
+    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="data_table3">
+  <!-- <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  id="data_table3"> -->
     <thead>
       <tr>
         <th>S.No</th>
-        <th>Product Name</th>
-        <th>Barcode</th>
-        <th>From Location</th>
-        <th>To Location</th>
-        <th>Quantity</th>
+        <th>Supplier</th>
+        <th>Door No</th>
+        <th>Street</th>
+        <th>Area</th>
+        <th>City</th>
+        <th>district</th>
+        <th>State</th>
+        <th>Country</th>
+        <th>Pincode</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
       @foreach($data2 as $item2)
       <tr class="item2{{$item2->id}}">
         <td></td>
-        <td>{{$item2->product_name}}</td>
-        <td>{{$item2->barcode}}</td>
-        <td>{{$item2->from_location}}</td>
-        <td>{{$item2->to_location}}</td>
-        <td>{{$item2->quantity}}</td>
+        <td>{{$item2->supplier}}</td>
+        <td>{{$item2->door_number}}</td>
+        <td>{{$item2->street}}</td>
+        <td>{{$item2->area}}</td>
+        <td>{{$item2->city}}</td>
+        <td>{{$item2->district}}</td>
+        <td>{{$item2->state}}</td>
+        <td>{{$item2->country}}</td>
+        <td>{{$item2->pincode}}</td>
+        <td>{{$item2->email}}</td>
+        <td>{{$item2->mobile}}</td>
+        <td>{{$item2->status}}</td>
       </tr>
       @endforeach
     </tbody>
@@ -362,7 +387,7 @@
 
   </div>
   </section>
-
+  <script src="script/sales.js"></script>
   <!-- Jquery Core Js -->
   <script src="plugins/jquery/jquery.min.js"></script>
 
@@ -384,9 +409,18 @@
   <!-- Waves Effect Plugin Js -->
   <script src="plugins/node-waves/waves.js"></script>
 
+
+
   <!-- Jquery DataTable Plugin Js -->
   <script src="plugins/jquery-datatable/jquery.dataTables.js"></script>
   <script src="plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+  <script src="/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
   <!-- Custom Js -->
   <script src="js/admin.js"></script>
@@ -397,7 +431,6 @@
 
   <!-- Demo Js -->
   <script src="js/demo.js"></script>
-  <script src="script/sales.js"></script>
 
 </body>
 

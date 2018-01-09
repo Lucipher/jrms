@@ -19,10 +19,6 @@ class CreateExhibitStockTable extends Migration
             $table->string('product_name');
             $table->string('product_id');
             $table->string('barcode');
-            $table->string('supplier');
-            $table->string('invoice_number');
-            $table->string('billed_date');
-            $table->string('received_date');
             $table->string('from_location');
             $table->string('to_location')->nullable();
             $table->integer('quantity')->unsigned();

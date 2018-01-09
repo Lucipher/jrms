@@ -1,26 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function FocusQuantity() {
 
             var ItemsList = document.getElementById("ItemsList").value;
@@ -63,7 +40,7 @@ function FocusQuantity() {
             }
         }
 
-        function salesKeyupQuantity(evt){
+    function salesKeyupQuantity(evt){
             var e = event || evt; // for
             var charCode = e.which || e.keyCode;
 
@@ -688,7 +665,7 @@ function FocusQuantity() {
                 if(+SpotD<+TotalAmt)
                 {
                     var Amt= (TotalAmt-SpotD).toFixed(2);
-                    $("#Ttl_Amount").html("₹ "+parseFloat(Amt).toLocaleString() );
+                    $("#Ttl_Amount").html("₹ "+parseFloat(Amt).toLocaleString());
                 }
                 else
                 {
@@ -922,7 +899,7 @@ function FocusQuantity() {
                                 var Pdt_Count = table.rows.length - 1;
                                 $("#Ttl_Product").html(Pdt_Count);
                                 $("#Ttl_Quantity").html(Qty_Count);
-                                $("#Ttl_Amount").html("₹ "+parseFloat(Amt).toLocaleString() );
+                                $("#Ttl_Amount").html("₹ "+parseFloat(Amt).toLocaleString());
                                  $("#Ttl_AmountFinal").val(Amt);
                                 SpotDiscounttxtKeyup_Overall();
                                 document.getElementById("Final_Count").value ="";
@@ -1109,7 +1086,15 @@ function FocusQuantity() {
                                 cell1.style.width="40px";
 
                                 var elLink = document.createElement('a');
-                                var href='./Receipt/'+InvoiceSelection.invoicenumber;
+                                var href='';
+
+                                if(document.getElementById("ThermalPOS").checked == true)
+                                {
+                                  href='./ReceiptPOS/'+InvoiceSelection.invoicenumber;
+                                }
+                                else {
+                                  href='./Receipt/'+InvoiceSelection.invoicenumber;
+                                }
                                 elLink.href = href;
                                 elLink.setAttribute('target', '_blank');
                                 elLink.innerHTML = InvoiceSelection.invoicenumber;
@@ -1422,7 +1407,13 @@ function FocusQuantity() {
                                 }
                             }
                         });
-                        window.open('../Receipt/'+ InvoiceNum.replace(/ /g,""),'_blank');
+                        if(document.getElementById("Thermal").checked == true)
+                        {
+                          window.open('../ReceiptPOS/'+ InvoiceNum.replace(/ /g,""),'_blank');
+                        }
+                        else {
+                          window.open('../Receipt/'+ InvoiceNum.replace(/ /g,""),'_blank');
+                        }
                 }
             }
 
@@ -1632,7 +1623,6 @@ function FocusQuantity() {
         }
 
         function InvoiceNum(){
-
             var Inum="";
             var WLoc=String(window.location);
             var url89 = '';
@@ -1652,6 +1642,7 @@ function FocusQuantity() {
                    success:function(data)
                    {
                         Inum=data.INumber;
+
                         if(WLoc.search("/InVoice/")!=-1)
                         {
                           window.location = "../InVoice/" + Inum;
@@ -1688,7 +1679,6 @@ function FocusQuantity() {
 
         $('document').ready(function(){
         //=======================================================================
-
             var InvoiceNo = document.getElementById("InvoiceNo").innerHTML;
             InvoiceNo = InvoiceNo.replace(/ /g,"");
             var Loc=String(window.location);
@@ -1697,7 +1687,6 @@ function FocusQuantity() {
                 UpdateItemsList(InvoiceNo);
             }
             else{
-
               UpdateItemsList(InvoiceNo);
             }
 

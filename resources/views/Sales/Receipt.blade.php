@@ -48,7 +48,7 @@
 			<div>
 				<div id="JRDetails">
 				    <div id="col1">
-						  <img src="../images/LOGO.png" id="Logo" width="90px" height="90px">
+						  <img src="../images/LOGO5.png" id="Logo" width="150px" height="90px">
 				    </div>
 				    <div id="col1" class="col-md-3">
 				    	<p class="linespacing25 textalignright font-18">
@@ -72,14 +72,14 @@
 
 				    <div id="col1" class="linespacing3">
 				    	<h5 align="left">&nbsp;Billing To</h5>
-                        	@foreach ($ReceiptSelections as $ReceiptSelection)
+                @foreach ($ReceiptSelections as $ReceiptSelection)
 						    	<div id="BillAddress" name="BillAddress" class="textalignleft font-16">
 						    		<p class="linespacing17" id="address" name="address">
 						    		</p>
 						    		<p id="addresshidden" name="addresshidden" hidden>{{$ReceiptSelection->salutation}}{{$ReceiptSelection->name}}*{{$ReceiptSelection->address1}}*{{$ReceiptSelection->address2}}*{{$ReceiptSelection->address3}}*{{$ReceiptSelection->address4}}*{{$ReceiptSelection->district}}*{{$ReceiptSelection->pincode}}*{{$ReceiptSelection->state}}*{{$ReceiptSelection->country}}*{{$ReceiptSelection->mobile1}}*</p>
 						    	</div>
 						    	@break
-                            @endforeach
+                @endforeach
 				    	</div>
 				    </div>
 					</br>
@@ -124,7 +124,7 @@
 					<table id="ItemTablereceipt" name="ItemTablereceipt">
 						<thead align="left">
 							<tr>
-                  <th id="thead_Items">S. No</th>
+                  <th id="thead_Items">SNo</th>
 							    <th id="thead_Items">Description</th>
 							    <th id="thead_Items">Quantity</th>
 							    <th id="thead_Items">MRP</th>

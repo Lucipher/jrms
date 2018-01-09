@@ -17,6 +17,7 @@
 </head>
 
 <body class="theme-cyan" >
+
   <div class="page-loader-wrapper">
     <div class="loader">
       <div class="preloader">
@@ -78,13 +79,13 @@
                   @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                   <li class="active">
                       <a href="{{ url('/register') }}">
-                          <i class="material-icons">home</i>
+                          <i class="material-icons">assignment_ind</i>
                           <span>Registration</span>
                       </a>
                   </li>
                   <li >
                       <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">dns</i>
+                          <i class="material-icons">shopping_basket</i>
                           <span>Items</span>
                       </a>
                       <ul class="ml-menu">
@@ -99,10 +100,25 @@
                           </li>
                       </ul>
                   </li>
+                  <li>
+                      <a href="javascript:void(0);" class="menu-toggle">
+                          <i class="material-icons">euro_symbol</i>
+                          <span>Purchase</span>
+                      </a>
+                      <ul class="ml-menu">
+                          <li >
+                              <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                          </li>
+                          <li>
+                              <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                          </li>
+                      </ul>
+                  </li>
                   @endif
+
                   <li>
                        <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">reorder</i>
+                          <i class="material-icons">line_style</i>
                           <span>Stock</span>
                       </a>
                       <ul class="ml-menu">
@@ -122,7 +138,7 @@
                   </li>
                   <li>
                       <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">reorder</i>
+                        <i class="material-icons">shopping_cart</i>
                         <span>Sales</span>
                       </a>
                       <ul class="ml-menu">
@@ -176,6 +192,17 @@
               <div class="row clearfix">
                 <form method="post" action="{{url('/register')}}">
                 {{ csrf_field() }}
+                <!-- Staff ID -->
+                <div class="col-md-4 form-control-label">
+                  <label for="name">Staff ID</label>
+                </div>
+                <div class="col-md-6 col-md-offset-1">
+                  <div class="form-group">
+                    <div class="form-line">
+                        <input type="number" name="sid" id="sid" class="form-control" required autofocus min="1">
+                    </div>
+                  </div>
+                </div>
                 <!-- Username -->
                 <div class="col-md-4 form-control-label">
                   <label for="name">Username</label>
@@ -274,7 +301,7 @@
                 <div class="col-md-6 col-md-offset-1">
                   <div class="form-group">
                     <div class="form-line">
-                        <input type="number" name="pincode" id="pincode" oninput="if(value.length>6)value=value.slice(0,6)" class="form-control" required>
+                        <input type="number" name="pincode" id="pincode" min="0" oninput="if(value.length>6)value=value.slice(0,6)" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -285,7 +312,7 @@
                 <div class="col-md-6 col-md-offset-1">
                   <div class="form-group">
                     <div class="form-line">
-                        <input type="number" name="mobile" id="mobile" class="form-control" oninput="if(value.length>10)value=value.slice(0,10)" required>
+                        <input type="number" name="mobile" id="mobile" class="form-control" min="0" oninput="if(value.length>10)value=value.slice(0,10)" required>
                     </div>
                   </div>
                 </div>
@@ -297,12 +324,14 @@
                   <div class="form-group">
                     <div class="form-line">
                       <!-- <input type="text" name="branch" id="branch" class="form-control" required> -->
-                      <input list="name1" class="form-control date" id="branch" name="branch" autofocus="true" required>
-                      <datalist id="name1">
+                      <!-- <input list="name1" class="form-control date" id="branch" name="branch" autofocus="true" value="Select" required> -->
+                      <!-- <datalist id="name1"> -->
+                      <select class="form-control input-sm" id="branch" name="branch">
                         @foreach($data as $item)
                           <option> {{$item->location}}</option>
                         @endforeach
-                      </datalist>
+                      </select>
+                      <!-- </datalist> -->
                     </div>
                   </div>
                 </div>
@@ -347,5 +376,18 @@
 <!-- Demo Js -->
 <script src="js/demo.js"></script>
 <script src="script/sales.js"></script>
+<!-- <script type="text/javascript">
+    // document.getElementById('branch').addEventListener('input', function () {
+    //   alert($(this).val().attr('id'));
+    // });
+
+    // $(document).ready(function() {
+   $('#branch name1').change(function() {
+     //Get the id of list items
+       var ID = $(this).attr('id');
+       alert(ID);
+   }); -->
+  // });
+</script>
 </body>
 </html>

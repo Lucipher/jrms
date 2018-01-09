@@ -97,20 +97,21 @@ class ItemController extends Controller
           }
           $item->mrp = $request->mrp;
           $item->disc1 = $request->disc1;
+          // $item->disc2 = $request->disc2;
+          if($request->disc1==null) {
+            $item->disc1 = 'percent';
+          }
           if($request->disc2==null) {
             $item->disc2 = 'Error';
           }
-          if($request->disc1==null) {
-            $item->disc2 = 'Error';
-          }
-          //$item->disc2 = $request->disc2;
+          //
           $item->discvalue = $request->discvalue;
-          $item->finalprice = $request->finalprice;
+          $item->finalprice = $_REQUEST['finalprice1'];
           $item->createdby = $user->name;
           $item->modifiedby = $user->name;
           $item->save();
           return redirect()->back()->withItem($item);
-          //return view('items.insert');
+          return view('items.insert');
           }
       }
       catch (\Exception $e)
@@ -159,33 +160,34 @@ class ItemController extends Controller
         $item->disc1 = $request->disc1;
         $item->disc2 = $request->disc2;
 
-        if($item->disc1==null) {
-          $item->disc2 = $request->disc2;
-          $item->disc1 = 'null';
+        if($item->disc1=="rupees") {
+          // $item->disc2 = $request->disc2;
+          $item->disc1 = 'rupees';
         }
-        elseif ($request->disc2==null) {
-          $item->disc2 = 'null';
-          $item->disc1 = $request->disc1;
+        else if ($item->disc2=="percent") {
+          // $item->disc2 = 'null';
+          // $item->disc1 = $request->disc1;
+          $item->disc1 = 'percent';
         }
 
         if($request->disc1==null) {
-          $item->disc2 = 'novalue';
+          $item->disc2 = 'Error';
         }
         if($request->disc2==null) {
-          $item->disc2 = 'null';
+          $item->disc2 = 'Error';
         }
-
-
         $discvalue = $_REQUEST['discvalue'];
         $finalprice = $_REQUEST['finalprice'];//'featured_image'=>$item->featured_image,
-        $upt=DB::table('items')
-            ->where('itemname',$chkvalue)
-            ->orWhere('bnumber',$chkvalue)
-            ->update(['bnumber' => $bnumber,'itemname'=>$itemname,'openstock'=>$openstock,'minstock'=>$minstock,
-          'isactive'=>$isactive,'notforsale'=>$notforsale,'ispurchased'=>$ispurchased,'online'=>$online,'suppname'=>$suppname,
-        'categoryname'=>$categoryname,'subcategoryname'=>$subcategoryname,'desc'=>$desc,
-      'mrp'=>$mrp,'disc1'=>$item->disc1,'disc2'=>$item->disc2,'discvalue'=>$discvalue,'finalprice'=>$finalprice]);
-        echo $upt;
+
+          $upt=DB::table('items')
+              ->where('itemname',$chkvalue)
+              ->orWhere('bnumber',$chkvalue)
+              ->update(['bnumber' => $bnumber,'itemname'=>$itemname,'openstock'=>$openstock,'minstock'=>$minstock,
+            'isactive'=>$isactive,'notforsale'=>$notforsale,'ispurchased'=>$ispurchased,'online'=>$online,
+          'categoryname'=>$categoryname,'subcategoryname'=>$subcategoryname,'desc'=>$desc,
+        'mrp'=>$mrp,'disc1'=>$item->disc1,'disc2'=>$item->disc2,'discvalue'=>$discvalue,'finalprice'=>$finalprice]);
+          echo $upt;
+
       }
       catch(\Exception $e)
       {

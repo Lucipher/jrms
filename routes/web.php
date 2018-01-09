@@ -58,12 +58,17 @@ Route::get('/add_country', 'StocksController@add_country');
 Route::get('/stocktransfercheck', 'StocksController@stocktransfercheck');
 Route::get('/stock', 'StocksController@stock');
 Route::get('/prodname','StocksController@prodname');
-
+Route::get('/purchase_stock','StocksController@purchase_stock');
+Route::get('/add_purchase_stock','StocksController@add_purchase_stock');
+Route::get('/purchase_stock_modify','StocksController@purchase_stock_modify');
+Route::get('/purchase_view', 'StocksController@purchase_view');
+Route::get('/purchase_stock_update','StocksController@purchase_stock_update');
 //Sales
 Route::get('/InVoice/{id}', 'SaleController@create_Invoice')->name('Sales');
 Route::get('/InVoiceFromHold/{id}', 'SaleController@create_HeldInvoice')->name('Sales');
 Route::get('/HeldInVoice', 'SaleController@create_PickHeldInVoice')->name('Sales');
 Route::get('/Receipt/{id}', 'SaleController@create_Receipt');
+Route::get('/ReceiptPOS/{id}', 'SaleController@create_ReceiptPOS');
 Route::get('/View', 'SaleController@create_View');
 Route::resource('sales','SaleController');
 
@@ -84,7 +89,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/Receipt/{id}', 'SaleController@create_Receipt');
 // Route::get('/View', 'SaleController@create_View');
 // Route::resource('sales','SaleController');
+
 //============================ ajax Functions
+
+Route::get('/ajaxQuantityFinal', 'SaleController@QuantityFinal');
 Route::get('/ajaxInvoiceNextval', 'SaleController@InvoiceNumber');
 Route::get('/ajaxHoldInVoice', 'SaleController@HoldInVoice');
 Route::get('/ajaxPickheldSearch', 'SaleController@PickheldSearch');
@@ -119,6 +127,7 @@ Route::get('/district', 'SaleController@district')->name('district');
 // Route::get('/ajaxDiscount', 'SaleController@InvoiceDiscount');
 // Route::get('/ajaxGetAddress', 'SaleController@GetAddress');
 //============================ End of Sales Module Routes ============================================
+
 Route::get('/insertitem','ItemController@index');
 Route::get('/modifyitem','ItemController@index');
 Route::post('/insertitem','ItemController@store');

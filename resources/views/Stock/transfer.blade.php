@@ -50,7 +50,8 @@
               $('#prod_name').blur();
               $("#showloc").hide();
               $("#shstk").hide();
-
+              $("#add_transfer").hide();
+              $("#confirm").attr("disabled", "disabled");
 
               $("#stock_location").change(function(){
                   // var country=$('#Country').val();
@@ -69,12 +70,10 @@
                        if(n == 0)
                        {
                          alert("Stock Unavailable for this location");
-                           $("#stock_location").val('');
+                         $("#stock_location").val('');
                        }
                        else
                        {
-
-                         alert("Toggle Product name to do transfer");
                          $('#prod_name').focus();
                          $('#prod_name').append( "<option>" + "Select product" + "</option>");
                          for(var i=0;i<=n-1;i++)
@@ -156,7 +155,7 @@
                   $( "#qty" ).keypress(function( event ) {
                   if ( event.which == 13 )
                   {
-                    $("#stock_location").attr("disabled", "disabled");
+                    // $("#stock_location").attr("disabled", "disabled");
                       var prod_name=$('#prod_name').val();
                       var product_id=$('#product_id ').val();
                       var barcode=$('#barcode').val();
@@ -189,14 +188,18 @@
                         }
                         else if(+qty > +stk)
                         {
+
                             alert("Stock is less to transfer!!!");
+                            // $("#stock_location").removeAttr('disabled');
                             $("#prod_name").val('');
                             $("#product_id").val('');
                             $("#barcode").val('');
                             $("#qty").val('');
                             $("#stk").val('');
                             $("#stock_location").val('');
+
                             $("#prod_name").blur();
+                            $("#stock_location").focus();
                         }
                         else
                         {
@@ -208,7 +211,15 @@
                             //     myTable.deleteRow(x);
                             // }
 
-                            $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name + "</td><td>" + product_id + "</td><td>" + barcode    + "</td><td>" +  stock_location   + "</td><td>" + qty  + "</td></tr>");
+                            // $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name + "</td><td>" + product_id + "</td><td>" + barcode    + "</td><td>" +  stock_location   + "</td><td>" + qty  + "</td></tr>");
+                            $('#display_table tbody').append('<tr><td><input type="hidden" value=' + ' ' + ' /></td><td><input type="text" style="border: none;" size="10" value='
+                            + prod_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
+                            product_id  + ' ></td><td><input type="text" style="border: none;" size="10" value='+ barcode +
+                            ' ></td><td><input type="text" style="border: none;" size="10" value='+ stock_location +
+                            ' ></td><td><input type="text" style="border: none;" size="10" value='+ qty +
+                            ' ></td><td><input type="button" class="ajaxdelete" id="ajaxdelete" value="Delete" /></td></tr>');
+
+                                $("#confirm").removeAttr('disabled');
 
                                 // $("#product_id").attr("disabled", "disabled");
                                 $("#prod_name").val('');
@@ -225,7 +236,7 @@
 
                   $( "#transfer_product" ).click(function() {
 
-                    $("#stock_location").attr("disabled", "disabled");
+                    // $("#stock_location").attr("disabled", "disabled");
                       var prod_name=$('#prod_name').val();
                       var product_id=$('#product_id ').val();
                       var barcode=$('#barcode').val();
@@ -264,7 +275,7 @@
                             $("#barcode").val('');
                             $("#qty").val('');
                             $("#stk").val('');
-                            $("#stock_location").val('');
+                            // $("#stock_location").val('');
                             $("#prod_name").blur();
                         }
                         else
@@ -277,7 +288,16 @@
                             //     myTable.deleteRow(x);
                             // }
 
-                            $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name + "</td><td>" + product_id + "</td><td>" + barcode    + "</td><td>" +  stock_location   + "</td><td>" + qty  + "</td></tr>");
+
+                            // $('#display_table tbody').append('<tr><td><input type="hidden" value=' + ' ' + ' /></td><td><input type="text" style="border: none;" size="10" value='
+                            // + prod_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
+                            // product_id  + ' ></td><td><input type="text" style="border: none;" size="10" value='+ barcode +
+                            // ' ></td><td><input type="text" style="border: none;" size="10" value='+ stock_location +
+                            // ' ></td><td><input type="text" style="border: none;" size="10" value='+ qty +
+                            // ' ></td><td><input type="button" class="ajaxdelete" id="ajaxdelete" value="Delete" /></td></tr>');
+
+                            $('#display_table tbody').append("<tr><td>" + " " + "</td><td>" + prod_name + "</td><td>" + product_id + "</td><td>" + barcode    + "</td><td>" +  stock_location   + "</td><td>" + qty  + "</td><td><input type='button' class='ajaxdelete' id='ajaxdelete' value='Delete' /></td></tr>");
+                                $("#confirm").removeAttr('disabled');
 
                                 // $("#product_id").attr("disabled", "disabled");
                                 $("#prod_name").val('');
@@ -323,15 +343,8 @@
                                       type: 'get',
                                       success:function(data)
                                       {
-                                          // alert("fgfdsga");
-                                          // var i=0;
-                                          // if(i == 0)
-                                          // {
-                                          //   i=1;
-                                          //   alert("Saved Successfully");
-                                          //   i++;
-                                          // }
-                                        alert(data);
+
+                                        // alert(data);
                                       },
 
                                   });
@@ -373,28 +386,22 @@
                                       type: 'get',
                                       success:function(data)
                                       {
-                                          alert(data);
-                                          // alert("fgfdsga");
-                                          // var i=0;
-                                          // if(i == 0)
-                                          // {
-                                          //   i=1;
-                                          //   alert("Saved Successfully");
-                                          // }
-
+                                          // alert(data);
                                       },
 
                                   });
 
 
                               });
-
+                      alert("Saved Successfully");
                       $('#smallModal').modal('hide');
                       location.reload();
 
                   });
               $( "#add_transfer" ).click(function()
               {
+                 $("#add_transfer").hide();
+                 $("#modify_transfer").show();
                  $("#transfer_add").show();
                  $("#transfer_modify").hide();
 
@@ -402,6 +409,8 @@
 
               $( "#modify_transfer" ).click(function()
               {
+                 $("#add_transfer").show();
+                 $("#modify_transfer").hide();
                  $("#transfer_add").hide();
                  $("#edit_transfer_id").hide();
                  $("#transfer_modify").show();
@@ -420,35 +429,14 @@
                       {
                          // // alert("Record Inserted");
                          $.each(data, function(i, ItemSel){
-                         // alert(ItemSel.itemname);
-                         // alert(ItemSel.bnumber);
-
-                         // $("#edit_product_name").val(ItemSel.product_name);
-                         // $("#edit_barcode").val(ItemSel.barcode);
-                         // $("#edit_product_id").val(ItemSel.product_id);
-                         // $("#edit_qty").val(ItemSel.quantity);
-                         // $("#edit_from_location").val(ItemSel.from_location);
-                         // $("#edit_to_location").val(ItemSel.to_location);
-                         // $("#edit_id").val(ItemSel.id);
-
-                         // alert(ItemSel.id);
-                         // $("#qty").focus();
-                         // $("#showloc").show();
-                         // $("#stkloc").focus();
-
-                        //  $('#transfer_edit tbody').append("<tr><td>" + " " + "</td><td>" + ItemSel.product_name + "</td><td>" +
-                        //  ItemSel.product_id + "</td><td>" + ItemSel.barcode  + "</td><td>" + ItemSel.from_location + "</td><td>" +
-                        //  ItemSel.to_location   + "</td><td>" + ItemSel.quantity
-                        //  + "</td><td><input type='button' class='ajaxedit' id='ajaxedit' value='Edit'/> <input type='button' id='ajaxsave' class='ajaxsave' value='Save'>"
-                        //  + "</td></tr>");
-
                         $('#transfer_edit tbody').append('<tr><td><input type="hidden" value=' + ' ' + ' /></td><td><input type="text" style="border: none;" size="10" value='
                         + ItemSel.product_name + ' /></td><td><input type="text" style="border: none;" size="10" value=' +
                         ItemSel.product_id  + ' ></td><td><input type="text" style="border: none;"  id="edit_supplier" class="content_edit" size="10" value='+ ItemSel.barcode +
                         ' ></td><td><input type="text" id="edit_invoice" class="content_edit" style="border: none;" size="10" value='+ ItemSel.from_location +
                         ' ></td><td><input type="text" id="edit_billeddate" class="content_edit" style="border: none;" size="10" value='
                         + ItemSel.to_location + ' /></td><td><input type="number"  id="edit_quantity" class="content_edit"  onkeypress="return event.charCode >= 48" min="1" style="border: none;width:80px;" size="5" value='
-                        + ItemSel.quantity + ' ></td><td><input type="button" class="ajaxedit" id="ajaxedit" value="Edit" /> <input type="button" class="ajaxsave" id="ajaxsave" value="Save" />' + '</td></tr>');
+                        + ItemSel.quantity + ' ></td><td><input type="text" id="edit_notes" class="content_edit" style="border: none;" size="10" value='
+                        + ItemSel.notes + ' /></td><td><input type="button" class="ajaxedit" id="ajaxedit" value="Edit" /> <input type="button" class="ajaxsave" id="ajaxsave" value="Save" />' + '</td></tr>');
 
                         $(".content_edit").attr("readonly", "false");
                        });
@@ -459,92 +447,7 @@
 
                   });
 
-
-
-              //    $( "#edit_details" ).keypress(function( event ) {
-              //      if ( event.which == 13 || event.which == 9)
-              //      {
-               //
-              //           var edit_details=$('#edit_details').val();
-               //
-              //           $.ajax
-              //           ({
-              //              url: '/stocktransfermodify',
-              //              data: {edit_details:edit_details },
-              //              type: 'get',
-              //              success:function(data)
-              //              {
-              //                 // // alert("Record Inserted");
-              //                 $.each(data, function(i, ItemSel){
-              //                 // alert(ItemSel.itemname);
-              //                 // alert(ItemSel.bnumber);
-               //
-              //                 // $("#edit_product_name").val(ItemSel.product_name);
-              //                 // $("#edit_barcode").val(ItemSel.barcode);
-              //                 // $("#edit_product_id").val(ItemSel.product_id);
-              //                 // $("#edit_qty").val(ItemSel.quantity);
-              //                 // $("#edit_from_location").val(ItemSel.from_location);
-              //                 // $("#edit_to_location").val(ItemSel.to_location);
-              //                 // $("#edit_id").val(ItemSel.id);
-               //
-              //                 // alert(ItemSel.id);
-              //                 // $("#qty").focus();
-              //                 // $("#showloc").show();
-              //                 // $("#stkloc").focus();
-               //
-              //                     $('#transfer_edit tbody').append("<tr><td>" + " " + "</td><td class='product_name'>" + ItemSel.product_name + "</td><td>" +
-              //                     ItemSel.product_id + "</td><td class='barcode'>" + ItemSel.barcode  + "</td><td class='from_location'>" + ItemSel.from_location + "</td><td class='to_location'>" +
-              //                     ItemSel.to_location   + "</td><td class='quantity'>" + ItemSel.quantity
-              //                     + "</td><td><input type='button' class='ajaxedit' id='ajaxedit' value='Edit'/> <input type='button' id='ajaxsave' class='ajaxsave' value='Save'>"
-              //                     + "</td></tr>");
-               //
-               //
-               //
-               //
-               //
-              //               });
-              //               // alert(data);
-              //             },
-              //          });
-              //          return false;
-              //     }
-              //  });
              });
-
-
-            //  $( "#edit_transfer_button" ).click(function()
-            //  {
-            //    var product_name=$('#edit_product_name').val();
-            //    var barcode=$('#edit_barcode').val();
-            //    var product_id=$('#edit_product_id').val();
-            //    var from_location=$('#edit_from_location').val();
-            //    var to_location=$('#edit_to_location').val();
-            //    var edit_id=$('#edit_id').val();
-            //    var edit_qty=$('#edit_qty').val();
-            //
-            //    $.ajax
-            //    ({
-            //       url: '/stocktransferupdate',
-            //       data: {product_name:product_name,barcode:barcode,product_id:product_id,
-            //         from_location:from_location,to_location:to_location,edit_id:edit_id,edit_qty:edit_qty},
-            //       type: 'get',
-            //       success:function(data)
-            //       {
-            //         alert(data);
-            //         // $("#product_name").val('');
-            //         // $("#barcode").val('');
-            //         // $("#product_id").val('');
-            //         // $("#from_location").val('');
-            //         // $("#to_location").val('');
-            //         // $("#edit_id").val('');
-            //         // $("#edit_qty").val('');
-            //         location.reload();
-            //      },
-            //
-            //
-            //   });
-            //
-            // });
 
           });
           $(document).on('click', '.ajaxedit', function()
@@ -552,6 +455,7 @@
               // alert("edit");
 
               $("#edit_quantity").  removeAttr('readonly');
+              $("#edit_notes").  removeAttr('readonly');
 
               var product_name = $(this).closest("tr").find("td:eq(1) input[type='text']").val();
               var product_id = $(this).closest("tr").find("td:eq(2) input[type='text']").val();
@@ -559,13 +463,16 @@
               var from_location = $(this).closest("tr").find("td:eq(4) input[type='text']").val();
               var to_location = $(this).closest("tr").find("td:eq(5) input[type='text']").val();
               var quantity = $(this).closest("tr").find("td:eq(6) input[type='number']").val();
+              var notes = $(this).closest("tr").find("td:eq(7) input[type='text']").val();
 
 
               $("#stock_qty").val(quantity);
 
-              // $(this).closest("tr").find('td:eq(6)').prop('contenteditable', true);
-              // $(this).closest("tr").find('td:eq(6)').focus();
-              // $(this).closest("tr").find('td:eq(6)').text('');
+          });
+
+          $(document).on('click', '.ajaxdelete', function()
+          {
+            $(this).parents("tr").remove();
 
           });
 
@@ -580,18 +487,17 @@
             var from_location = $(this).closest("tr").find("td:eq(4) input[type='text']").val();
             var to_location = $(this).closest("tr").find("td:eq(5) input[type='text']").val();
             var quantity = $(this).closest("tr").find("td:eq(6) input[type='number']").val();
-
+            var notes = $(this).closest("tr").find("td:eq(7) input[type='text']").val();
 
              var url7='ajax_check_quantity';
               $.ajax
               ({
                   url: url7,
                   data: {product_name:product_name,product_id:product_id,barcode:barcode,quantity:quantity,
-                    from_location:from_location,to_location:to_location,stock_qty:stock_qty},
+                    from_location:from_location,to_location:to_location,stock_qty:stock_qty,notes:notes},
                   type: 'get',
                   success:function(data)
                   {
-                    alert("gjhfdg");
                     // alert(data);
                     if(+quantity == '')
                     {
@@ -614,7 +520,7 @@
                       ({
                           url:url8,
                           data: {product_name:product_name,product_id:product_id,barcode:barcode,quantity:quantity,
-                            from_location:from_location,to_location:to_location,stock_qty:stock_qty},
+                            from_location:from_location,to_location:to_location,stock_qty:stock_qty,notes:notes},
                           type: 'get',
                           success:function(data)
                           {
@@ -625,14 +531,9 @@
                        $('#table_content').html('');
 
                     }
-
-
-
                   },
                 });
-
-
-          });
+            });
 
     </script>
     <style type="text/css">
@@ -688,17 +589,17 @@
                    <img src="images/user.png" width="48" height="48" alt="User" />
                </div>
                <div class="info-container">
-                   <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
-                   <div class="email">{{{Auth::user()->email}}}</div>
+                   <div class="name" style="color:white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{{Auth::user()->name}}}</div>
+                   <div class="email" style="color:white;">{{{Auth::user()->email}}}</div>
                    <div class="btn-group user-helper-dropdown">
                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                        <ul class="dropdown-menu pull-right">
-                           <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                           <!-- <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
                            <li role="seperator" class="divider"></li>
                            <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
                            <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
                            <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                           <li role="seperator" class="divider"></li>
+                           <li role="seperator" class="divider"></li> -->
                            <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="material-icons">input</i>Sign Out</a></li>
                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                {{ csrf_field() }}
@@ -722,13 +623,13 @@
                    @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                    <li class="">
                        <a href="{{ url('/register') }}">
-                           <i class="material-icons">home</i>
+                           <i class="material-icons">assignment_ind</i>
                            <span>Registration</span>
                        </a>
                    </li>
                    <li >
                        <a href="javascript:void(0);" class="menu-toggle">
-                           <i class="material-icons">dns</i>
+                           <i class="material-icons">shopping_basket</i>
                            <span>Items</span>
                        </a>
                        <ul class="ml-menu">
@@ -743,10 +644,24 @@
                            </li>
                        </ul>
                    </li>
+                   <li>
+                       <a href="javascript:void(0);" class="menu-toggle">
+                           <i class="material-icons">euro_symbol</i>
+                           <span>Purchase</span>
+                       </a>
+                       <ul class="ml-menu">
+                           <li >
+                               <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                           </li>
+                           <li>
+                               <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                           </li>
+                       </ul>
+                   </li>
                    @endif
                    <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
-                           <i class="material-icons">reorder</i>
+                           <i class="material-icons">line_style</i>
                            <span>Stock</span>
                        </a>
                        <ul class="ml-menu">
@@ -767,7 +682,7 @@
                    </li>
                    <li>
                        <a href="javascript:void(0);" class="menu-toggle">
-                         <i class="material-icons">reorder</i>
+                         <i class="material-icons">shopping_cart</i>
                          <span>Sales</span>
                        </a>
                        <ul class="ml-menu">
@@ -827,6 +742,7 @@
                                               <select class="form-control" id="stock_location" name="stock_location" data-placement="bottom" data-toggle="popover">
                                               <!-- <input list="name" class="form-control date" id="stock_location" name="stock_location">
                                               <datalist id="name"> -->
+                                                  <option>Select Location</option>
                                                   @foreach($data1 as $item)
                                                        <option> {{$item->location}}</option>
                                                   @endforeach
@@ -926,6 +842,7 @@
                                                     <th>Barcode</th>
                                                     <th>From Location</th>
                                                     <th>Quantity</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1074,6 +991,7 @@
                                                                     <th>From Location</th>
                                                                     <th>To Location</th>
                                                                     <th>Quantity</th>
+                                                                    <th>Notes</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
@@ -1093,7 +1011,7 @@
 </section>
 
 
-    <script src="/script/sales.js"></script>
+    <script src="script/sales.js"></script>
     <!-- Jquery Core Js -->
     <script src="plugins/jquery/jquery.min.js"></script>
 

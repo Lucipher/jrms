@@ -187,13 +187,13 @@
                     @if(Auth::user()->role == "admin" || Auth::user()->role == "superuser")
                     <li class="">
                         <a href="{{ url('/register') }}">
-                            <i class="material-icons">home</i>
+                            <i class="material-icons">assignment_ind</i>
                             <span>Registration</span>
                         </a>
                     </li>
                     <li >
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">dns</i>
+                            <i class="material-icons">shopping_basket</i>
                             <span>Items</span>
                         </a>
                         <ul class="ml-menu">
@@ -208,10 +208,25 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">euro_symbol</i>
+                            <span>Purchase</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li >
+                                <a href="{{ url('purchase_stock') }}">Purchase-Stock</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('purchase_view') }}">Purchase- View</a>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
+
                     <li>
                          <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">reorder</i>
+                            <i class="material-icons">line_style</i>
                             <span>Stock</span>
                         </a>
                         <ul class="ml-menu">
@@ -231,7 +246,7 @@
                     </li>
                     <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
-                          <i class="material-icons">reorder</i>
+                          <i class="material-icons">shopping_cart</i>
                           <span>Sales</span>
                         </a>
                         <ul class="ml-menu">
@@ -445,7 +460,9 @@
 
                                 <div class="col-md-3">
                                     <p>
-                                        <b>&nbsp;</b>
+                                    <b>
+                                      <input type='checkbox' id="ThermalPOS" class='filled-in' checked/><label for="ThermalPOS"> Thermal</label>
+                                    </b>
                                     </p>
                                     <button type="button" id="View_Search" name="View_Search" class="btn bg-cyan waves-effect" onclick="ViewHeldSearch()">
                                         <i class="material-icons">search</i>

@@ -56,7 +56,6 @@ class SaleController extends Controller
 
     }
 
-
     public function QuantityFinal(Request $request){
         $user = Auth::user();
 
@@ -121,6 +120,8 @@ class SaleController extends Controller
             return $Exe-> getMessage();
         }
     }
+
+
     public function InvoiceInsert(Request $request) {
 
             $user = Auth::user();
@@ -209,10 +210,6 @@ class SaleController extends Controller
         }
 
 
-
-
-
-
     public function GetAddress(Request $request) {
 
         // $Invoice = new Invoice;
@@ -231,6 +228,7 @@ class SaleController extends Controller
             return $Exe-> getMessage();
         }
     }
+
 
     public function ReceiptInsert(Request $request) {
 
@@ -543,7 +541,12 @@ class SaleController extends Controller
     public function create_HeldInvoice($id){
 
         $user = Auth::user();
-        $Items = DB::table('addstock')->distinct()->where('location', $user->branch)->pluck('product_name');
+        $Items = DB::table('addstock')
+        ->distinct()
+        ->where('quantity', '>', '0')
+        ->where('location', $user->branch)
+        ->pluck('product_name');
+
         Session::forget('InvoiceNumberFromHold');
         Session::put('InvoiceNumberFromHold', $id);
         $Locations = StockLocation::orderBy('location', 'ASC')->get();
@@ -560,36 +563,68 @@ class SaleController extends Controller
             $data = array('Items'  => $Items,'Locations'  => $Locations,'INumber' => $id,'TotalQty' => $TQty ,'Totalamt' => $Tamt,'InvoiceDate' => $invoicedate,'country'  => $country,'state'  => $state,'district'  => $district,);
             return view('Sales.Invoice')->with($data);
         }
-        else{
-            return view('Sales.Invoice');
-        }
     }
-
 
     public function create_Invoice($id){
 
         $user = Auth::user();
-        $Items = DB::table('addstock')->distinct()->where('location', $user->branch)->pluck('product_name');
+
+        $Items = DB::table('addstock')
+        ->distinct()
+        ->where('location', $user->branch)
+        ->where('quantity', '>', '0')
+        ->pluck('product_name');
+
         $Locations = StockLocation::orderBy('location', 'ASC')->get();
         $country= CountryDetails::distinct()->pluck('country');
         $state= CountryDetails::distinct()->pluck('state');
         $district= CountryDetails::distinct()->pluck('district');
-        $user = Auth::user();
 
         $Invoicedate = DB::select("select to_char(Current_Date, 'dd/mm/YYYY') as date");
 
         $Tamt = 0;
         $TQty = 0;
 
+        echo $Items;
+
         if(count($Items) > 0){
             $data = array('Items'  => $Items,'Locations'  => $Locations,'INumber' => $id,'TotalQty' => $TQty ,'Totalamt' => $Tamt,'InvoiceDate' => $Invoicedate['0']->date,'country'  => $country,'state'  => $state,'district'  => $district,);
             return view('Sales.Invoice')->with($data);
-
-        }
-        else{
-            return view('Sales.Invoice');
-        }
+          }
     }
+        public function create_ReceiptPOS($id)
+        {
+            $value = $id;
+            $ReceiptSelections = DB::table('hdpos_receipt')
+                    ->leftJoin('hdpos_receiptitems', DB::raw('hdpos_receipt.id'), '=', DB::raw('hdpos_receiptitems.receiptid::integer') )
+                    ->leftJoin('items', DB::raw('hdpos_receiptitems.itemid::integer'), '=', 'items.id' )
+                    ->leftJoin('address', DB::raw('hdpos_receipt.userid::integer'), '=', 'address.id' )
+                    ->where('hdpos_receipt.invoicenumber', (string)$value)
+                    ->select('items.id','items.bnumber','items.itemname','items.openstock','items.minstock','items.isactive','items.notforsale','items.ispurchased','items.online','items.categoryname','items.subcategoryname','items.desc','items.featured_image','items.mrp','items.disc1','items.disc2','items.discvalue','items.finalprice','items.createdby','items.modifiedby','items.created_at','items.updated_at','hdpos_receiptitems.id','hdpos_receiptitems.receiptid','hdpos_receiptitems.itemid','hdpos_receiptitems.amount as Itemamount','hdpos_receiptitems.quantity as Itemquantity','hdpos_receiptitems.discount','hdpos_receiptitems.discountchkbox','hdpos_receiptitems.spotdiscountchkbox','hdpos_receiptitems.spotdiscountpercent','hdpos_receiptitems.spotdiscountamount','hdpos_receiptitems.created_at','hdpos_receiptitems.updated_at','hdpos_receipt.id','hdpos_receipt.userid','hdpos_receipt.invoicenumber','hdpos_receipt.invoicedate','hdpos_receipt.totalproduct','hdpos_receipt.totalquantity','hdpos_receipt.amount','hdpos_receipt.spotdiscountpercent','hdpos_receipt.spotdiscountamount','hdpos_receipt.totalamount','hdpos_receipt.status','hdpos_receipt.createdby','hdpos_receipt.modifiedby','hdpos_receipt.created_at','hdpos_receipt.updated_at','address.salutation','address.name','address.gender','address.address1','address.address2','address.address3','address.address4','address.district','address.pincode','address.state','address.country','address.phone','address.mobile1','address.mobile2','address.email','address.bday','address.wday','address.occupation','address.nameofchurch','address.language','address.addressyear','address.mode','address.remarks','address.status')
+                    ->orderBy('hdpos_receiptitems.id', 'DESC')
+                    ->get();
+
+                $data = array('ReceiptSelections'  => $ReceiptSelections,);
+                return view('Sales.ReceiptPOS')->with($data);
+                // if("$ReceiptSelections" == null)
+                // {
+                //     return view('Sales.Receipt');
+                // }
+                // else
+                // {
+                //     return response()->json(array('body' => view('Sales.Receipt')->render(), 'ReceiptSelections' => $ReceiptSelections));
+                // }
+            // $Items = DB::table('items')->pluck('itemname');
+
+            // if(count($Items) > 0){
+            //     $data = array('Items'  => $Items,);
+            //     return view('Sales.Invoice')->with($data);
+            // }
+            // else{
+            //     return view('Sales.Invoice');
+            // }
+        }
+
 
     public function create_Receipt($id)
     {
