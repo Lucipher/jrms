@@ -353,7 +353,7 @@
                             </div>
                           </div>
 
-
+                          <!-- Test -->
                           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8">
                             <div class="form-group">
                               <input type="submit" name="cat" id="cat" value="Add Category" class="align-right btn btn-primary m-t-5 waves-effect"></input>
